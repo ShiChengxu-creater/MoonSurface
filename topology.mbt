@@ -1,7 +1,7 @@
 ///|
 /// Each edge owns two consecutive halfedges, including the exterior one.
 priv struct Halfedge {
-  origin : Int
+  mut origin : Int
   mut next : Int
   mut face : Int
 }

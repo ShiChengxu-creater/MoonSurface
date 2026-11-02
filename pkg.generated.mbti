@@ -21,6 +21,7 @@ pub suberror SurfaceError {
   NonManifoldVertex(Int)
   InvalidElement(Int)
   TopologyInvariant(String)
+  NumericalFailure(String)
 } derive(Eq, @debug.Debug)
 pub fn SurfaceError::equal(Self, Self) -> Bool
 pub fn SurfaceError::not_equal(Self, Self) -> Bool
@@ -71,10 +72,19 @@ pub fn Mesh::is_boundary_edge(Self, EdgeId) -> Bool raise SurfaceError
 pub fn Mesh::limits(Self) -> Limits
 pub fn Mesh::neighbors(Self, Int) -> Array[Int] raise SurfaceError
 pub fn Mesh::position(Self, Int) -> Vec3 raise SurfaceError
+pub fn Mesh::split_edge(Self, EdgeId, fraction? : Double) -> SplitReport raise SurfaceError
 pub fn Mesh::stats(Self) -> TopologyStats
 pub fn Mesh::to_indexed(Self) -> IndexedMesh
 pub fn Mesh::validate(Self) -> Unit raise SurfaceError
 pub fn Mesh::vertex_count(Self) -> Int
+
+pub(all) struct SplitReport {
+  vertex : Int
+  retained_edge : EdgeId
+  created_edges : Array[EdgeId]
+  created_faces : Array[Int]
+} derive(@debug.Debug)
+pub fn SplitReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct TopologyStats {
   vertices : Int
