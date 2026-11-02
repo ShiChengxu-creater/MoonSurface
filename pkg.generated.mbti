@@ -80,6 +80,7 @@ pub fn Mesh::flip_edge(Self, EdgeId) -> FlipReport raise SurfaceError
 pub fn Mesh::from_indexed(Array[Vec3], Array[(Int, Int, Int)], limits? : Limits) -> Self raise SurfaceError
 pub fn Mesh::is_boundary_edge(Self, EdgeId) -> Bool raise SurfaceError
 pub fn Mesh::limits(Self) -> Limits
+pub fn Mesh::loop_step(Self) -> Self raise SurfaceError
 pub fn Mesh::neighbors(Self, Int) -> Array[Int] raise SurfaceError
 pub fn Mesh::position(Self, Int) -> Vec3 raise SurfaceError
 pub fn Mesh::split_edge(Self, EdgeId, fraction? : Double) -> SplitReport raise SurfaceError
