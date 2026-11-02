@@ -149,7 +149,7 @@ def main():
         (consumer/'moon.mod').write_text('name = "local/moonsurface_consumer"\n'
             'version = "0.0.0"\nimport { "ShiChengxu/moonsurface@'+version+'" }\n', encoding='utf-8')
         (consumer/'moon.pkg').write_text('import {\n "ShiChengxu/moonsurface" @surface,\n'
-            ' "ShiChengxu/moonsurface/exchange" @job,\n "moonbitlang/core/json",\n}\n', encoding='utf-8')
+            ' "ShiChengxu/moonsurface/exchange" @job,\n "moonbitlang/core/json",\n} for "test"\n', encoding='utf-8')
         (consumer/'consumer_test.mbt').write_text(TESTS, encoding='utf-8')
         run(['moon', 'check', '--target', args.target, '--deny-warn', str(consumer)],
             cwd=work, target=args.target)
