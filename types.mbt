@@ -20,6 +20,7 @@ pub suberror SurfaceError {
   NonManifoldEdge(Int, Int)
   NonManifoldVertex(Int)
   InvalidElement(Int)
+  TopologyInvariant(String)
 } derive(Eq, Debug)
 
 ///|
