@@ -22,6 +22,8 @@ pub suberror SurfaceError {
   InvalidElement(Int)
   TopologyInvariant(String)
   NumericalFailure(String)
+  BoundaryEdge(Int)
+  DuplicateDiagonal(Int, Int)
 } derive(Eq, @debug.Debug)
 pub fn SurfaceError::equal(Self, Self) -> Bool
 pub fn SurfaceError::not_equal(Self, Self) -> Bool
@@ -32,6 +34,13 @@ pub(all) struct EdgeId(Int) derive(Eq, @debug.Debug)
 pub fn EdgeId::equal(Self, Self) -> Bool
 pub fn EdgeId::not_equal(Self, Self) -> Bool
 pub fn EdgeId::to_repr(Self) -> @debug.Repr
+
+pub(all) struct FlipReport {
+  edge : EdgeId
+  endpoints : (Int, Int)
+  faces : (Int, Int)
+} derive(@debug.Debug)
+pub fn FlipReport::to_repr(Self) -> @debug.Repr
 
 pub struct IndexedMesh {
   // private fields
@@ -67,6 +76,7 @@ pub fn Mesh::edge_count(Self) -> Int
 pub fn Mesh::edge_vertices(Self, EdgeId) -> (Int, Int) raise SurfaceError
 pub fn Mesh::face_count(Self) -> Int
 pub fn Mesh::find_edge(Self, Int, Int) -> EdgeId?
+pub fn Mesh::flip_edge(Self, EdgeId) -> FlipReport raise SurfaceError
 pub fn Mesh::from_indexed(Array[Vec3], Array[(Int, Int, Int)], limits? : Limits) -> Self raise SurfaceError
 pub fn Mesh::is_boundary_edge(Self, EdgeId) -> Bool raise SurfaceError
 pub fn Mesh::limits(Self) -> Limits

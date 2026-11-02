@@ -22,6 +22,8 @@ pub suberror SurfaceError {
   InvalidElement(Int)
   TopologyInvariant(String)
   NumericalFailure(String)
+  BoundaryEdge(Int)
+  DuplicateDiagonal(Int, Int)
 } derive(Eq, Debug)
 
 ///|
