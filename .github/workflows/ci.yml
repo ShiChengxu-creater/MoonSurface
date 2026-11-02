@@ -33,13 +33,15 @@ jobs:
         run: |
           moon version --all
           moonc -v | grep -F 'v0.10.14+7d59c7ec9'
-      - run: moon fmt --check
-      - run: python tools/check.py --target ${{ matrix.target }}
-      - name: Verify public interface
-        if: matrix.target == 'wasm-gc'
-        run: |
-          moon info
-          git diff --exit-code
+      - name: Check, build, test, examples, reference and package consumer
+        run: python tools/verify.py --target ${{ matrix.target }}
+      - name: Save verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-${{ matrix.target }}-evidence
+          path: artifacts/*.json
+          if-no-files-found: warn
   windows:
     runs-on: windows-2022
     timeout-minutes: 15
@@ -69,5 +71,14 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           $compilerVersion = moonc -v
           if ($compilerVersion -notmatch 'v0\.10\.14\+7d59c7ec9') { throw "Unexpected compiler: $compilerVersion" }
-      - run: moon fmt --check
-      - run: python tools/check.py --target native
+      - name: Check, build, test, examples, reference and package consumer
+        run: python tools/verify.py --target native
+      - name: Exercise Windows Node file adapter
+        run: python tools/cli_check.py
+      - name: Save verification evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-evidence
+          path: artifacts/*.json
+          if-no-files-found: warn
