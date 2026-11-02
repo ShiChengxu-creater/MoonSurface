@@ -1,6 +1,9 @@
 """Local/CI process helpers. No network, dependencies, or credential access."""
 from pathlib import Path
+from datetime import datetime, timezone
 import os
+import platform
+import re
 import shutil
 import subprocess
 
@@ -45,3 +48,17 @@ def run(args, *, target="wasm-gc", cwd=ROOT, capture=False):
     return subprocess.run([str(x) for x in args], cwd=cwd, env=build_environment(target),
                           check=True, text=True, encoding="utf-8", errors="replace",
                           capture_output=capture)
+
+
+def evidence_base(target, commands):
+    """Non-secret reproduction context shared by machine reports."""
+    module = (ROOT / 'moon.mod').read_text(encoding='utf-8')
+    return dict(executed_at=datetime.now(timezone.utc).isoformat(),
+                source_commit=run(['git', 'rev-parse', 'HEAD'], capture=True).stdout.strip(),
+                source_tree=run(['git', 'rev-parse', 'HEAD^{tree}'], capture=True).stdout.strip(),
+                source_dirty=bool(run(['git', 'status', '--porcelain'], capture=True).stdout.strip()),
+                module=re.search(r'^name\s*=\s*"([^"]+)"', module, re.M)[1],
+                version=re.search(r'^version\s*=\s*"([^"]+)"', module, re.M)[1],
+                target=target, platform=platform.platform(), python=platform.python_version(),
+                toolchain=run(['moon', 'version', '--all'], capture=True).stdout.strip(),
+                node=run(['node', '--version'], capture=True).stdout.strip(), commands=commands)

@@ -14,7 +14,7 @@ import subprocess
 import tempfile
 import zipfile
 
-from common import ROOT, run
+from common import ROOT, evidence_base, run
 
 
 TESTS = r'''///|
@@ -157,9 +157,10 @@ def main():
                      cwd=work, target=args.target, capture=True)
         assert 'Total tests: 4, passed: 4, failed: 0' in result.stdout, result.stdout+result.stderr
         modes.append(dict(mode=mode, tests=4, archive_entries=count))
-    report = dict(status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
-                  source_commit=commit, target=args.target, module='ShiChengxu/moonsurface',
-                  version=version, package_sha256=sha256(data).hexdigest(), modes=modes,
+    report = dict(evidence_base(args.target, [['python', 'tools/consumer.py', '--target', args.target],
+                                            ['moon', 'package']]),
+                  status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
+                  package_sha256=sha256(data).hexdigest(), modes=modes,
                   dependency_resolution='explicit local workspace members; no registry installation')
     output = ROOT/'artifacts'/f'consumer-{args.target}.json'
     output.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')

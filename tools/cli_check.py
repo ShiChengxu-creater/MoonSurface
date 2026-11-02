@@ -5,7 +5,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 
-from common import ROOT, run
+from common import ROOT, evidence_base, run
 
 
 def main():
@@ -55,8 +55,8 @@ def main():
     cli([], False, 'missing-arguments')
     cli([input_path, '--unknown', output_path], False, 'unknown-arguments')
     assert 'Usage:' in cli(['--help'], True, 'help').stdout
-    report = dict(status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
-                  source_commit=run(['git', 'rev-parse', 'HEAD'], capture=True).stdout.strip(),
+    report = dict(evidence_base('js', [['python', 'tools/cli_check.py']]),
+                  status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
                   checks=checks, count=len(checks))
     (base/'cli.json').write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
     print(f'Node CLI: {len(checks)} file/process checks passed')

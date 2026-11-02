@@ -5,7 +5,7 @@ import json
 import platform
 import sys
 
-from common import ROOT, run
+from common import ROOT, evidence_base, run
 
 
 def main():
@@ -30,14 +30,12 @@ def main():
         run([sys.executable, f'tools/{script}.py', '--target', args.target], target=args.target)
     if args.target == 'js':
         run([sys.executable, 'tools/cli_check.py'], target='js')
+        run([sys.executable, 'tools/readme_check.py'], target='js')
     run(['moon', 'info'], target=args.target)
     run(['git', 'diff', '--exit-code'])
-    report = dict(status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
-                  source_commit=run(['git', 'rev-parse', 'HEAD'], capture=True).stdout.strip(),
-                  commit_count=history, target=args.target, platform=platform.platform(),
-                  python=platform.python_version(),
-                  toolchain=run(['moon', 'version', '--all'], capture=True).stdout.strip(),
-                  node=run(['node', '--version'], capture=True).stdout.strip(),
+    report = dict(evidence_base(args.target, [['python', 'tools/verify.py', '--target', args.target]]),
+                  status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
+                  commit_count=history,
                   examples=examples)
     output = ROOT/'artifacts'/f'verification-{args.target}.json'
     output.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')

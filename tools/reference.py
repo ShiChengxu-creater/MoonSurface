@@ -6,11 +6,12 @@ Fixed seed, analytic stencils, full oriented face comparison and negative contro
 import argparse
 from collections import Counter, defaultdict
 from datetime import datetime, timezone
+from hashlib import sha256
 import json
 import math
 import random
 
-from common import ROOT, run
+from common import ROOT, evidence_base, run
 
 
 def key(a, b):
@@ -183,14 +184,17 @@ def main():
     args = parser.parse_args()
     run(['moon', 'build', '--target', args.target, '--deny-warn'], target=args.target)
     cases = []
+    jobs = []
     maximum_error = 0.
 
     def execute(points, faces, operations=None, **extra):
         job = dict(format='moonsurface/1', positions=points, triangles=faces,
                    operations=operations or [], **extra)
-        result = run(['moon', 'run', 'cmd/moonsurface', '--target', args.target, '--',
-                      json.dumps(job, separators=(',', ':'), allow_nan=False)],
+        payload = json.dumps(job, separators=(',', ':'), allow_nan=False)
+        result = run(['moon', 'run', 'cmd/moonsurface', '--target', args.target, '--', payload],
                      target=args.target, capture=True)
+        jobs.append(dict(input_sha256=sha256(payload.encode()).hexdigest(),
+                         output_sha256=sha256(result.stdout.encode()).hexdigest()))
         return json.loads(result.stdout)
 
     # Fresh jobs at each depth also verify cumulative preflight and stage counts.
@@ -252,13 +256,14 @@ def main():
             pass
         else:
             raise AssertionError('negative control was not detected')
-    commit = run(['git', 'rev-parse', 'HEAD'], capture=True).stdout.strip()
-    report = dict(status='passed', target=args.target, source_commit=commit,
+    report = dict(evidence_base(args.target, [['python', 'tools/reference.py', '--target', args.target]]),
+                  status='passed',
                   timestamp_utc=datetime.now(timezone.utc).isoformat(), fixture_seed=20261103,
                   loop_jobs=30, edit_jobs=len(sequences)*2, rejection_jobs=len(rejected),
                   negative_controls=len(mutants), max_normalized_coordinate_error=maximum_error,
                   reference='independent stdlib Python triangle-list implementation; not OpenMesh',
-                  cases=cases)
+                  cases=cases, job_hashes=jobs, control_baseline_jobs=1,
+                  unverified=['OpenMesh/OpenSubdiv oracle', 'QEM', 'performance and RSS'])
     output = ROOT / 'artifacts' / f'reference-{args.target}.json'
     output.parent.mkdir(exist_ok=True)
     output.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
