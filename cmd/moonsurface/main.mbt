@@ -1,7 +1,22 @@
 ///|
 #cfg(target="js")
-extern "js" fn host_request() -> String? =
-  #|() => typeof globalThis.__moonSurfaceInput === 'string' ? globalThis.__moonSurfaceInput : null
+extern "js" fn has_host_request() -> Bool =
+  #|() => typeof globalThis.__moonSurfaceInput === 'string'
+
+///|
+#cfg(target="js")
+extern "js" fn host_request_text() -> String =
+  #|() => globalThis.__moonSurfaceInput
+
+///|
+#cfg(target="js")
+fn host_request() -> String? {
+  if has_host_request() {
+    Some(host_request_text())
+  } else {
+    None
+  }
+}
 
 ///|
 #cfg(not(target="js"))

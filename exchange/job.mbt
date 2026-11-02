@@ -234,7 +234,11 @@ fn execute(value : Json) -> Json raise Error {
             Some(value) => number(value)
             None => 0.5
           }
-          let change = mesh.split_edge(edge, fraction~)
+          // The file protocol defines fraction from the requested a to b.
+          // The library measures it from edge_vertices(edge).0 to .1.
+          let actual = mesh.edge_vertices(edge)
+          let directed = if actual.0 == a { fraction } else { 1.0 - fraction }
+          let change = mesh.split_edge(edge, fraction=directed)
           reports.push(
             Json::object(
               Map([
