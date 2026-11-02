@@ -3,6 +3,9 @@
 ///|
 /// The result owns new storage and retains the original mesh's configured limits.
 pub fn Mesh::loop_step(self : Mesh) -> Mesh raise SurfaceError {
+  if self.limits.max_levels < 1 {
+    raise LimitExceeded("Loop levels")
+  }
   let count = self.vertex_count() + self.edge_count()
   if count > self.limits.max_vertices {
     raise LimitExceeded("Loop vertices")

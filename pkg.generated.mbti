@@ -6,6 +6,7 @@ import {
 }
 
 // Values
+pub fn subdivide_loop(Mesh, Int) -> LoopResult raise SurfaceError
 
 // Errors
 pub suberror SurfaceError {
@@ -68,10 +69,16 @@ pub fn Limits::output_face_limit(Self) -> Int
 pub fn Limits::to_repr(Self) -> @debug.Repr
 pub fn Limits::vertex_limit(Self) -> Int
 
+pub(all) struct LoopResult {
+  mesh : Mesh
+  stages : Array[TopologyStats]
+}
+
 pub struct Mesh {
   // private fields
 }
 pub fn Mesh::boundary_loops(Self) -> Array[Array[Int]]
+pub fn Mesh::copy(Self) -> Self raise SurfaceError
 pub fn Mesh::edge_count(Self) -> Int
 pub fn Mesh::edge_vertices(Self, EdgeId) -> (Int, Int) raise SurfaceError
 pub fn Mesh::face_count(Self) -> Int
@@ -82,6 +89,7 @@ pub fn Mesh::is_boundary_edge(Self, EdgeId) -> Bool raise SurfaceError
 pub fn Mesh::limits(Self) -> Limits
 pub fn Mesh::loop_step(Self) -> Self raise SurfaceError
 pub fn Mesh::neighbors(Self, Int) -> Array[Int] raise SurfaceError
+pub fn Mesh::plan_loop(Self, Int) -> Array[TopologyStats] raise SurfaceError
 pub fn Mesh::position(Self, Int) -> Vec3 raise SurfaceError
 pub fn Mesh::split_edge(Self, EdgeId, fraction? : Double) -> SplitReport raise SurfaceError
 pub fn Mesh::stats(Self) -> TopologyStats
