@@ -1,0 +1,45 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "ShiChengxu/moonsurface"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+pub suberror SurfaceError {
+  InvalidArgument(String)
+} derive(Eq, @debug.Debug)
+pub fn SurfaceError::equal(Self, Self) -> Bool
+pub fn SurfaceError::not_equal(Self, Self) -> Bool
+pub fn SurfaceError::to_repr(Self) -> @debug.Repr
+
+// Types and methods
+pub struct Limits {
+  max_vertices : Int
+  max_input_faces : Int
+  max_output_faces : Int
+  max_levels : Int
+} derive(Eq, @debug.Debug)
+pub fn Limits::equal(Self, Self) -> Bool
+pub fn Limits::input_face_limit(Self) -> Int
+pub fn Limits::level_limit(Self) -> Int
+pub fn Limits::new(max_vertices? : Int, max_input_faces? : Int, max_output_faces? : Int, max_levels? : Int) -> Self raise SurfaceError
+pub fn Limits::not_equal(Self, Self) -> Bool
+pub fn Limits::output_face_limit(Self) -> Int
+pub fn Limits::to_repr(Self) -> @debug.Repr
+pub fn Limits::vertex_limit(Self) -> Int
+
+pub(all) struct Vec3 {
+  x : Double
+  y : Double
+  z : Double
+} derive(Eq, @debug.Debug)
+pub fn Vec3::equal(Self, Self) -> Bool
+pub fn Vec3::not_equal(Self, Self) -> Bool
+pub fn Vec3::to_repr(Self) -> @debug.Repr
+
+// Type aliases
+
+// Traits

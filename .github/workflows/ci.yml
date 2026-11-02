@@ -1,0 +1,73 @@
+name: MoonSurface validation
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  core:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [native, js, wasm-gc]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned MoonBit
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location https://cli.moonbitlang.com/install/unix.sh -o /tmp/moon-install.sh
+          bash /tmp/moon-install.sh '0.10.14+7d59c7ec9'
+          echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+      - name: Verify compiler
+        run: |
+          moon version --all
+          moonc -v | grep -F 'v0.10.14+7d59c7ec9'
+      - run: moon fmt --check
+      - run: python tools/check.py --target ${{ matrix.target }}
+      - name: Verify public interface
+        if: matrix.target == 'wasm-gc'
+        run: |
+          moon info
+          git diff --exit-code
+  windows:
+    runs-on: windows-2022
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned MoonBit
+        shell: pwsh
+        env:
+          MOONBIT_INSTALL_VERSION: '0.10.14+7d59c7ec9'
+        run: |
+          Invoke-WebRequest https://cli.moonbitlang.com/install/powershell.ps1 -OutFile "$env:RUNNER_TEMP/moon-install.ps1"
+          & "$env:RUNNER_TEMP/moon-install.ps1"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          "$env:USERPROFILE/.moon/bin" >> $env:GITHUB_PATH
+      - name: Verify compiler
+        shell: pwsh
+        run: |
+          moon version --all
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          $compilerVersion = moonc -v
+          if ($compilerVersion -notmatch 'v0\.10\.14\+7d59c7ec9') { throw "Unexpected compiler: $compilerVersion" }
+      - run: moon fmt --check
+      - run: python tools/check.py --target native
