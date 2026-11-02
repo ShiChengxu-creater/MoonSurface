@@ -82,6 +82,7 @@ pub fn Mesh::copy(Self) -> Self raise SurfaceError
 pub fn Mesh::edge_count(Self) -> Int
 pub fn Mesh::edge_vertices(Self, EdgeId) -> (Int, Int) raise SurfaceError
 pub fn Mesh::face_count(Self) -> Int
+pub fn Mesh::face_normals(Self) -> Array[Vec3]
 pub fn Mesh::find_edge(Self, Int, Int) -> EdgeId?
 pub fn Mesh::flip_edge(Self, EdgeId) -> FlipReport raise SurfaceError
 pub fn Mesh::from_indexed(Array[Vec3], Array[(Int, Int, Int)], limits? : Limits) -> Self raise SurfaceError
@@ -96,6 +97,7 @@ pub fn Mesh::stats(Self) -> TopologyStats
 pub fn Mesh::to_indexed(Self) -> IndexedMesh
 pub fn Mesh::validate(Self) -> Unit raise SurfaceError
 pub fn Mesh::vertex_count(Self) -> Int
+pub fn Mesh::vertex_normals(Self) -> Array[Vec3] raise SurfaceError
 
 pub(all) struct SplitReport {
   vertex : Int
