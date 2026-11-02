@@ -16,7 +16,21 @@ pub suberror SurfaceError {
   DegenerateFace(Int)
   DuplicateFace(Int)
   IsolatedVertex(Int)
+  InconsistentOrientation(Int, Int)
+  NonManifoldEdge(Int, Int)
+  NonManifoldVertex(Int)
+  InvalidElement(Int)
 } derive(Eq, Debug)
+
+///|
+/// Edge identifiers belong to one mesh. A flip retains the id of its diagonal.
+pub(all) struct EdgeId(Int) derive(Eq, Debug)
+
+///|
+pub extend EdgeId with Eq::{equal, not_equal}
+
+///|
+pub extend EdgeId with @debug.Debug::{to_repr}
 
 ///|
 /// Count budgets, not an operating-system memory limit.

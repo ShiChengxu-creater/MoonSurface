@@ -1,8 +1,8 @@
 ///|
 /// Geometry-validated indexed triangles; manifold validation is done by Mesh.
 pub struct IndexedMesh {
-  vertices : Array[Vec3]
-  triangles : Array[(Int, Int, Int)]
+  priv vertices : Array[Vec3]
+  priv triangles : Array[(Int, Int, Int)]
 } derive(Eq, Debug)
 
 ///|
