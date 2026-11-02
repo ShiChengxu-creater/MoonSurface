@@ -10,18 +10,36 @@ import {
 // Errors
 pub suberror SurfaceError {
   InvalidArgument(String)
+  LimitExceeded(String)
+  InvalidIndex(Int, Int)
+  NonFiniteCoordinate(Int)
+  DegenerateFace(Int)
+  DuplicateFace(Int)
+  IsolatedVertex(Int)
 } derive(Eq, @debug.Debug)
 pub fn SurfaceError::equal(Self, Self) -> Bool
 pub fn SurfaceError::not_equal(Self, Self) -> Bool
 pub fn SurfaceError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
+pub struct IndexedMesh {
+  vertices : Array[Vec3]
+  triangles : Array[(Int, Int, Int)]
+} derive(Eq, @debug.Debug)
+pub fn IndexedMesh::equal(Self, Self) -> Bool
+pub fn IndexedMesh::faces(Self) -> Array[(Int, Int, Int)]
+pub fn IndexedMesh::new(Array[Vec3], Array[(Int, Int, Int)], limits? : Limits) -> Self raise SurfaceError
+pub fn IndexedMesh::not_equal(Self, Self) -> Bool
+pub fn IndexedMesh::positions(Self) -> Array[Vec3]
+pub fn IndexedMesh::to_repr(Self) -> @debug.Repr
+
 pub struct Limits {
   max_vertices : Int
   max_input_faces : Int
   max_output_faces : Int
   max_levels : Int
 } derive(Eq, @debug.Debug)
+pub fn Limits::default() -> Self
 pub fn Limits::equal(Self, Self) -> Bool
 pub fn Limits::input_face_limit(Self) -> Int
 pub fn Limits::level_limit(Self) -> Int

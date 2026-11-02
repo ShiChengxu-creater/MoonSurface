@@ -10,6 +10,12 @@ pub(all) struct Vec3 {
 /// Recoverable validation errors. No operation silently repairs invalid input.
 pub suberror SurfaceError {
   InvalidArgument(String)
+  LimitExceeded(String)
+  InvalidIndex(Int, Int)
+  NonFiniteCoordinate(Int)
+  DegenerateFace(Int)
+  DuplicateFace(Int)
+  IsolatedVertex(Int)
 } derive(Eq, Debug)
 
 ///|
@@ -40,6 +46,17 @@ pub fn Limits::new(
     raise InvalidArgument("limits exceed supported count ceilings")
   }
   { max_vertices, max_input_faces, max_output_faces, max_levels, }
+}
+
+///|
+/// Default count limits, with no allocation or fallible initialization.
+pub fn Limits::default() -> Limits {
+  {
+    max_vertices: 1_000_000,
+    max_input_faces: 250_000,
+    max_output_faces: 1_000_000,
+    max_levels: 6,
+  }
 }
 
 ///|
