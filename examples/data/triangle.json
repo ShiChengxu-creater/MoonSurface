@@ -1,0 +1,6 @@
+{
+  "format": "moonsurface/1",
+  "positions": [[0,0,0], [2,0,0], [0,2,0]],
+  "triangles": [[0,1,2]],
+  "operations": [{"kind":"loop", "levels":1}]
+}

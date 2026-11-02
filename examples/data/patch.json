@@ -1,0 +1,6 @@
+{
+  "format": "moonsurface/1",
+  "positions": [[0,0,0], [1,0,0], [1,1,0], [0,1,0]],
+  "triangles": [[0,1,2], [0,2,3]],
+  "operations": [{"kind":"flip", "edge":[0,2]}, {"kind":"split", "edge":[1,3]}]
+}

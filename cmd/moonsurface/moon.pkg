@@ -1,0 +1,6 @@
+import {
+  "ShiChengxu/moonsurface/exchange",
+  "moonbitlang/core/env",
+}
+
+pkgtype(kind: "executable")
