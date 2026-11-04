@@ -9,7 +9,8 @@
 **当前版本 `0.1.0-alpha.1`：十一月项目的初验开发里程碑。**
 已实现拓扑、split/flip、原始 Loop 权重和两条完整示例流程。
 collapse、压缩映射、QEM 和第三个简化场景属于后续阶段，当前没有这些 API。
-尚未发布到 Mooncakes；初验工程完成不等于主办方已经审核通过。
+该版本已发布到 [Mooncakes](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.1.0-alpha.1)，
+真实注册表消费者在三个后端验证通过。初验工程完成不等于主办方已经审核通过。
 完整初验说明见 [INITIAL_REVIEW.md](docs/INITIAL_REVIEW.md)。
 
 ## 能解决什么
@@ -56,7 +57,21 @@ loop_refine: level=2 V=34 E=96 F=64 chi=2
 
 ## 作为独立模块使用
 
-当前采用**本地 workspace 依赖**，以下目录结构和导入方法已由消费者测试验证：
+### 从 Mooncakes 安装
+
+在你的 MoonBit 项目中添加确切版本：
+
+```sh
+moon add ShiChengxu/moonsurface@0.1.0-alpha.1
+```
+
+在调用方的 `moon.pkg` 导入 `ShiChengxu/moonsurface` 并取别名 `@surface`，即可使用下方
+`main.mbt` 中的 API。下方三个 `app/` 文件也可直接放入一个独立目录，通过
+`moon run . --target js` 运行；这种注册表接入不需要 `moon.work` 或本地 MoonSurface 源码。
+
+### 从源码或 ZIP 接入
+
+采用**本地 workspace 依赖**时，以下目录结构和导入方法已由消费者测试验证：
 
 ```text
 workspace/
@@ -111,7 +126,8 @@ fn main {
 
 在 workspace 中运行 `moon run app --target js`。`try!` 用于示例的快速失败；
 应用应捕获 `SurfaceError`。所有实际公开签名在 [pkg.generated.mbti](pkg.generated.mbti)，
-行为约定见 [API.md](docs/API.md)。此过程没有验证 Mooncakes 注册表安装。
+行为约定见 [API.md](docs/API.md)。这组 workspace 步骤验证源码接入；
+单独的注册表消费记录见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
 
 ## 文件 CLI
 
@@ -151,6 +167,12 @@ GitHub Actions 包含 Ubuntu native/JS/wasm-gc 和 Windows native 四个任务�
 Windows 另验证 Node CLI；各任务上传 `artifacts/*.json`。
 本地报告也在 `artifacts/`，每份带源码提交和时间。对应提交的远端运行以
 [Actions 页面](https://github.com/ShiChengxu-creater/MoonSurface/actions)为准。
+
+已发布版本还可以单独复验真实注册表安装，此命令需要网络，不属于离线源码/ZIP 检查：
+
+```sh
+python tools/registry_consumer.py --version 0.1.0-alpha.1 --source-ref 4aae55e --readme
+```
 
 ## 边界与许可
 

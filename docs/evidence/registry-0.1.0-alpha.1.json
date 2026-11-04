@@ -1,0 +1,99 @@
+{
+  "status": "passed",
+  "executed_at": "2026-11-04T15:42:26.627099+00:00",
+  "module": "ShiChengxu/moonsurface",
+  "version": "0.1.0-alpha.1",
+  "resolution": "Mooncakes registry; no moon.work or local path replacement",
+  "compared_source_commit": "4aae55eec5bb1c7fffb08ef732bc7d88dcc6383a",
+  "production_files": [
+    {
+      "file": "cmd/moonsurface/main.mbt",
+      "sha256_lf": "a0cca79efe8d80d734e72a4257adf9cf0e5505d3e88f38f6c4b17fe371fea425"
+    },
+    {
+      "file": "examples/local_edit/main.mbt",
+      "sha256_lf": "683b250d927f16ac4493e48c13d1060ef0f66da7f2ec91b1bd02bdc490122ef2"
+    },
+    {
+      "file": "examples/loop_refine/main.mbt",
+      "sha256_lf": "1b5dfef07c8e8abeb6e2ff0e44ed48f94079d9a347094c5810955d1eccade2d5"
+    },
+    {
+      "file": "exchange/job.mbt",
+      "sha256_lf": "645736e61d9b981edb4b4b413e74fde359baa0096939789c37725529eb790f59"
+    },
+    {
+      "file": "flip.mbt",
+      "sha256_lf": "9ef1633664cf0561fd44ddfa70da8994f3c6a2a9ac7a731f1586b4b03a3317d6"
+    },
+    {
+      "file": "indexed.mbt",
+      "sha256_lf": "158eaa951a8c2b461a2c67abccd00f42b435e115ce090c813aa7e59ec3eb5c14"
+    },
+    {
+      "file": "inspect.mbt",
+      "sha256_lf": "75baa273d76e15d5f363d96dd57da2faaa54df09ac01c2725f640edadf01375a"
+    },
+    {
+      "file": "loop.mbt",
+      "sha256_lf": "3454ba365fc48ebad9cb110af1d3f1ffea810667c6ac16588a0a239a209ede9f"
+    },
+    {
+      "file": "normals.mbt",
+      "sha256_lf": "6b48ee18596b318a04197aabc8c66b995d45b81791f39e9a6ac9a0c595d270a0"
+    },
+    {
+      "file": "refine.mbt",
+      "sha256_lf": "88970655fdc76fabd3dc3e199f02e75934d463da6f244ba173330a5314679c01"
+    },
+    {
+      "file": "split.mbt",
+      "sha256_lf": "bee322ce64cbec4b8c61ebd7235d4907d912a4e7ccc052833a0a4deb2d6a6805"
+    },
+    {
+      "file": "topology.mbt",
+      "sha256_lf": "5b0e1a6a8bcd359e2cd1f3a6329c46e3133b19f0fb0a8b5a8d2d46cf95ecd2a9"
+    },
+    {
+      "file": "types.mbt",
+      "sha256_lf": "9c28c390c0f93af301a75ff914d277ab8882a591b652affa8da79f648a75c4d0"
+    }
+  ],
+  "registry_archive_sha256": "30c01a7247526bdcc89cc789401d6076bf2b46dd900a0a567ffddb6204fe58d5",
+  "readme": {
+    "target": "js",
+    "output": "16",
+    "dependency_source": "registry"
+  },
+  "targets": [
+    {
+      "target": "js",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "target": "wasm-gc",
+      "tests": 4,
+      "passed": 4
+    },
+    {
+      "target": "native",
+      "tests": 4,
+      "passed": 4
+    }
+  ],
+  "platform": "Windows-11-10.0.26200-SP0",
+  "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+  "registry_created_at_utc": "2026-11-04T15:29:46.443694+00:00",
+  "registry_status": "success",
+  "registry_deprecated": false,
+  "dependency": {
+    "name": "ShiChengxu/moonsurface",
+    "version": "0.1.0-alpha.1",
+    "source": {
+      "kind": "registry"
+    },
+    "workspace_member": false
+  },
+  "verification_tool_sha256": "9e3186cdd7e1d2d8d1dcde14634e54fa34bfafaae29f2983827e3270b6089894"
+}
