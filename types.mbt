@@ -24,6 +24,9 @@ pub suberror SurfaceError {
   NumericalFailure(String)
   BoundaryEdge(Int)
   DuplicateDiagonal(Int, Int)
+  ProtectedFeature(Int, Int)
+  AttributeConflict(String)
+  CollapseTopology(Int, Int)
 } derive(Eq, Debug)
 
 ///|

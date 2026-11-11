@@ -25,12 +25,24 @@ pub suberror SurfaceError {
   NumericalFailure(String)
   BoundaryEdge(Int)
   DuplicateDiagonal(Int, Int)
+  ProtectedFeature(Int, Int)
+  AttributeConflict(String)
+  CollapseTopology(Int, Int)
 } derive(Eq, @debug.Debug)
 pub fn SurfaceError::equal(Self, Self) -> Bool
 pub fn SurfaceError::not_equal(Self, Self) -> Bool
 pub fn SurfaceError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
+pub(all) struct CornerUV {
+  a : Vec2
+  b : Vec2
+  c : Vec2
+} derive(Eq, @debug.Debug)
+pub fn CornerUV::equal(Self, Self) -> Bool
+pub fn CornerUV::not_equal(Self, Self) -> Bool
+pub fn CornerUV::to_repr(Self) -> @debug.Repr
+
 pub(all) struct EdgeId(Int) derive(Eq, @debug.Debug)
 pub fn EdgeId::equal(Self, Self) -> Bool
 pub fn EdgeId::not_equal(Self, Self) -> Bool
@@ -52,6 +64,15 @@ pub fn IndexedMesh::new(Array[Vec3], Array[(Int, Int, Int)], limits? : Limits) -
 pub fn IndexedMesh::not_equal(Self, Self) -> Bool
 pub fn IndexedMesh::positions(Self) -> Array[Vec3]
 pub fn IndexedMesh::to_repr(Self) -> @debug.Repr
+
+pub(all) enum Interpolation {
+  Linear
+  UnitVector
+  Discrete
+} derive(Eq, @debug.Debug)
+pub fn Interpolation::equal(Self, Self) -> Bool
+pub fn Interpolation::not_equal(Self, Self) -> Bool
+pub fn Interpolation::to_repr(Self) -> @debug.Repr
 
 pub struct Limits {
   max_vertices : Int
@@ -99,6 +120,31 @@ pub fn Mesh::validate(Self) -> Unit raise SurfaceError
 pub fn Mesh::vertex_count(Self) -> Int
 pub fn Mesh::vertex_normals(Self) -> Array[Vec3] raise SurfaceError
 
+pub struct Model {
+  // private fields
+}
+pub fn Model::collapse_edge(Self, Int, Int, fraction? : Double) -> Unit raise SurfaceError
+pub fn Model::compact(Self) -> ModelSnapshot raise SurfaceError
+pub fn Model::copy(Self) -> Self
+pub fn Model::corner_normals(Self) -> Array[(Vec3, Vec3, Vec3)] raise SurfaceError
+pub fn Model::face_count(Self) -> Int
+pub fn Model::flip_edge(Self, Int, Int) -> Unit raise SurfaceError
+pub fn Model::is_protected(Self, Int, Int) -> Bool raise SurfaceError
+pub fn Model::new(Mesh, attributes? : Array[VertexAttribute], corner_uvs? : Array[CornerUV], materials? : Array[Int], feature_edges? : Array[(Int, Int)], sharp_angle_degrees? : Double) -> Self raise SurfaceError
+pub fn Model::position(Self, Int) -> Vec3 raise SurfaceError
+pub fn Model::split_edge(Self, Int, Int, fraction? : Double) -> Int raise SurfaceError
+pub fn Model::vertex_count(Self) -> Int
+
+pub(all) struct ModelSnapshot {
+  mesh : Mesh
+  attributes : Array[VertexAttribute]
+  corner_uvs : Array[CornerUV]
+  materials : Array[Int]
+  feature_edges : Array[(Int, Int)]
+  vertex_map : Array[Int]
+  face_map : Array[Int]
+}
+
 pub(all) struct SplitReport {
   vertex : Int
   retained_edge : EdgeId
@@ -120,6 +166,14 @@ pub fn TopologyStats::equal(Self, Self) -> Bool
 pub fn TopologyStats::not_equal(Self, Self) -> Bool
 pub fn TopologyStats::to_repr(Self) -> @debug.Repr
 
+pub(all) struct Vec2 {
+  x : Double
+  y : Double
+} derive(Eq, @debug.Debug)
+pub fn Vec2::equal(Self, Self) -> Bool
+pub fn Vec2::not_equal(Self, Self) -> Bool
+pub fn Vec2::to_repr(Self) -> @debug.Repr
+
 pub(all) struct Vec3 {
   x : Double
   y : Double
@@ -128,6 +182,15 @@ pub(all) struct Vec3 {
 pub fn Vec3::equal(Self, Self) -> Bool
 pub fn Vec3::not_equal(Self, Self) -> Bool
 pub fn Vec3::to_repr(Self) -> @debug.Repr
+
+pub struct VertexAttribute {
+  name : String
+  width : Int
+  interpolation : Interpolation
+  // private fields
+}
+pub fn VertexAttribute::new(String, Int, Interpolation, Array[Array[Double]]) -> Self raise SurfaceError
+pub fn VertexAttribute::values(Self) -> Array[Array[Double]]
 
 // Type aliases
 
