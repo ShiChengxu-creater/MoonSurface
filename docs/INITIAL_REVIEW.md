@@ -6,6 +6,11 @@
 2026-11-04 更新：初验版本已发布到 Mooncakes，且无本地替换的三后端注册表消费者
 与 README 示例通过。发布范围和证据见 [REGISTRY_RELEASE.md](REGISTRY_RELEASE.md)。
 
+2026-11-11 更新：报名初审未通过。本文保留 `0.1.0-alpha.1` 当时的工程记录；
+新 `0.2.0-alpha.1` 源码候选已补充属性、特征保护和各向同性重网格化，见
+[MODEL_CONTRACT.md](MODEL_CONTRACT.md) 及 [真实模型对照](REAL_MODELS.md)。
+受检 collapse/compact 已进入新候选，QEM 仍未实现。新候选尚未发布，未宣称复审通过。
+
 ## 本阶段交付
 
 | 范围 | 可检查的实现/证据 |
