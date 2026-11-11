@@ -105,9 +105,9 @@ test "consumer/attribute-aware model and protected remeshing" {
   assert_true(result.report.splits > 0)
   assert_eq(result.output.attributes[0].values().length(),result.output.mesh.vertex_count())
   assert_eq(model.vertex_count(),3)
-  let export = model.compact()
+  let snapshot = model.compact()
   let normals = model.corner_normals()
-  assert_eq(export.face_charts.length(),1)
+  assert_eq(snapshot.face_charts.length(),1)
   assert_eq(normals[0].0.z,1.0)
 }
 '''
