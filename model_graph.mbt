@@ -24,6 +24,7 @@ priv struct ModelState {
   limits : Limits
   mut nv : Int
   mut nf : Int
+  mut angle_floor : Double
 }
 
 ///|
@@ -70,6 +71,7 @@ fn graph_new(
     constraints: Map([]),
     nv: points.length(),
     nf: 0,
+    angle_floor: 0.0,
   }
 }
 
@@ -203,6 +205,7 @@ fn ModelState::copy(self : ModelState) -> ModelState {
     out.alive[i] = flag
   }
   out.nv = self.nv
+  out.angle_floor = self.angle_floor
   for face in self.faces {
     let id = out.faces.length()
     out.faces.push(face)

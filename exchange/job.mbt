@@ -144,6 +144,9 @@ fn stats(value : @surface.TopologyStats) -> Json {
 ///|
 fn execute(value : Json) -> Json raise Error {
   let fields = object(value)
+  if fields.get("format") == Some(Json::string("moonsurface-model/1")) {
+    return model_execute(fields)
+  }
   keys(fields, ["format", "positions", "triangles", "operations", "limits"])
   if required(fields, "format") != Json::string("moonsurface/1") {
     raise BadRequest("format must be moonsurface/1")

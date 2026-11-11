@@ -14,6 +14,7 @@ pub(all) struct ModelSnapshot {
   feature_edges : Array[(Int, Int)]
   vertex_map : Array[Int]
   face_map : Array[Int]
+  face_charts : Array[Int]
 }
 
 ///|
@@ -111,6 +112,11 @@ pub fn Model::new(
         normal_dot(state.face_normal(left), state.face_normal(right)) <
         cosine - 1.0e-12
     }
+    for attr in state.attributes {
+      if attr.interpolation == Discrete && attr.data[key.0] != attr.data[key.1] {
+        constrained = true
+      }
+    }
     if constrained {
       state.constraints[key] = true
     }
@@ -198,6 +204,7 @@ pub fn Model::compact(self : Model) -> ModelSnapshot raise SurfaceError {
   let triangles : Array[(Int, Int, Int)] = []
   let uv : Array[CornerUV] = []
   let materials : Array[Int] = []
+  let charts : Array[Int] = []
   for i, f in s.faces {
     if !f.alive {
       continue
@@ -208,6 +215,7 @@ pub fn Model::compact(self : Model) -> ModelSnapshot raise SurfaceError {
       uv.push(value)
     }
     materials.push(f.material)
+    charts.push(f.chart)
   }
   let limits = {
     ..s.limits,
@@ -241,5 +249,6 @@ pub fn Model::compact(self : Model) -> ModelSnapshot raise SurfaceError {
     feature_edges: features,
     vertex_map: vm,
     face_map: fm,
+    face_charts: charts,
   }
 }

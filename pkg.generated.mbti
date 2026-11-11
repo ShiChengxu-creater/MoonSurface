@@ -6,6 +6,8 @@ import {
 }
 
 // Values
+pub fn remesh_isotropic(Model, Double, iterations? : Int, max_operations? : Int, relaxation? : Double, minimum_angle? : Double) -> RemeshResult raise SurfaceError
+
 pub fn subdivide_loop(Mesh, Int) -> LoopResult raise SurfaceError
 
 // Errors
@@ -54,6 +56,19 @@ pub(all) struct FlipReport {
   faces : (Int, Int)
 } derive(@debug.Debug)
 pub fn FlipReport::to_repr(Self) -> @debug.Repr
+
+pub(all) struct GeometryQuality {
+  vertices : Int
+  edges : Int
+  faces : Int
+  min_angle_degrees : Double
+  mean_min_angle_degrees : Double
+  mean_triangle_quality : Double
+  edge_min : Double
+  edge_max : Double
+  edge_mean : Double
+  edge_cv : Double
+}
 
 pub struct IndexedMesh {
   // private fields
@@ -132,6 +147,7 @@ pub fn Model::flip_edge(Self, Int, Int) -> Unit raise SurfaceError
 pub fn Model::is_protected(Self, Int, Int) -> Bool raise SurfaceError
 pub fn Model::new(Mesh, attributes? : Array[VertexAttribute], corner_uvs? : Array[CornerUV], materials? : Array[Int], feature_edges? : Array[(Int, Int)], sharp_angle_degrees? : Double) -> Self raise SurfaceError
 pub fn Model::position(Self, Int) -> Vec3 raise SurfaceError
+pub fn Model::quality(Self) -> GeometryQuality raise SurfaceError
 pub fn Model::split_edge(Self, Int, Int, fraction? : Double) -> Int raise SurfaceError
 pub fn Model::vertex_count(Self) -> Int
 
@@ -143,7 +159,41 @@ pub(all) struct ModelSnapshot {
   feature_edges : Array[(Int, Int)]
   vertex_map : Array[Int]
   face_map : Array[Int]
+  face_charts : Array[Int]
 }
+
+pub(all) struct RemeshReport {
+  iterations : Int
+  attempts : Int
+  splits : Int
+  collapses : Int
+  flips : Int
+  relaxed : Int
+  rejected : Int
+  rejected_topology : Int
+  rejected_geometry : Int
+  rejected_attributes : Int
+  rejected_budget : Int
+  minimum_angle : Double
+  stop : RemeshStop
+}
+
+pub(all) struct RemeshResult {
+  output : ModelSnapshot
+  report : RemeshReport
+  before : GeometryQuality
+  after : GeometryQuality
+}
+
+pub(all) enum RemeshStop {
+  IterationLimit
+  OperationBudget
+  StableUnderConstraints
+  StorageLimit
+} derive(Eq, @debug.Debug)
+pub fn RemeshStop::equal(Self, Self) -> Bool
+pub fn RemeshStop::not_equal(Self, Self) -> Bool
+pub fn RemeshStop::to_repr(Self) -> @debug.Repr
 
 pub(all) struct SplitReport {
   vertex : Int

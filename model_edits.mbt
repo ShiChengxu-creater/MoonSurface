@@ -11,7 +11,11 @@ fn ModelState::face_ok(
   let c = if proposed.c == moved { point } else { self.points[proposed.c] }
   !degenerate(a, b, c) &&
   normal_dot(self.face_normal(old), unit_face(a, b, c)) > 1.0e-8 &&
-  uv_survives(old.uv, proposed.uv)
+  uv_survives(old.uv, proposed.uv) &&
+  (
+    self.angle_floor == 0.0 ||
+    minimum_angle(a, b, c) + 1.0e-8 >= self.angle_floor
+  )
 }
 
 ///|
@@ -53,6 +57,7 @@ fn ModelState::split(
   a : Int,
   b : Int,
   t : Double,
+  projected? : ModelSample? = None,
 ) -> Int raise SurfaceError {
   let ids = self.edge_faces(a, b)
   if !finite(t) || t <= 0.0 || t >= 1.0 {
@@ -64,10 +69,18 @@ fn ModelState::split(
     4 * Int::max(self.limits.max_input_faces, self.limits.max_output_faces) {
     raise LimitExceeded("model split slots/faces")
   }
-  let point = v_lerp(self.points[a], self.points[b], t)
+  let point = match projected {
+    Some(sample) => sample.point
+    None => v_lerp(self.points[a], self.points[b], t)
+  }
   let rows : Array[Array[Double]] = []
   for attr in self.attributes {
     rows.push(attribute_blend(attr, a, b, t))
+  }
+  if projected is Some(sample) {
+    for i in 0..<rows.length() {
+      rows[i] = sample.rows[i].copy()
+    }
   }
   let m = self.points.length()
   let planned : Array[ModelFace] = []
@@ -81,7 +94,10 @@ fn ModelState::split(
       if edge_key(u, v) != edge_key(a, b) {
         continue
       }
-      let um = uv_lerp(f.corner(a), f.corner(b), t)
+      let um = match projected {
+        Some({ uv: Some(uv), .. }) => uv
+        _ => uv_lerp(f.corner(a), f.corner(b), t)
+      }
       let left = triangle_like(f, u, m, w, f.corner(u), um, f.corner(w))
       let right = triangle_like(f, m, v, w, um, f.corner(v), f.corner(w))
       if !self.face_ok(f, left, m, point) || !self.face_ok(f, right, m, point) {
