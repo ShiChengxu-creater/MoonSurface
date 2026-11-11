@@ -263,6 +263,9 @@ fn convex3(
   c : Double,
   w : (Double, Double, Double),
 ) -> Double {
+  if a == b && b == c {
+    return a
+  }
   let scale = Double::max(abs(a), Double::max(abs(b), abs(c)))
   if scale == 0.0 {
     return 0.0
@@ -348,11 +351,97 @@ fn ModelState::move_vertex(
     }
     planned.push((id, proposed))
   }
+  let checked = self.check_patch(
+    self.incident[v],
+    planned.map(fn(item) { item.1 }),
+    v,
+    sample.point,
+  )
   self.points[v] = sample.point
   for i, attr in self.attributes {
     attr.data[v] = sample.rows[i].copy()
   }
-  for (id, f) in planned {
-    self.faces[id] = f
+  for i, (id, _) in planned {
+    self.faces[id] = checked[i]
   }
+}
+
+///|
+/// Reject new face samples outside the reference patch envelope.
+fn ModelState::reference_close(
+  self : ModelState,
+  chart : Int,
+  a : Vec3,
+  b : Vec3,
+  c : Vec3,
+) -> Bool {
+  match self.projection_guard {
+    None => true
+    Some(reference) =>
+      try {
+        for
+          p in [
+            v_lerp(a, b, 0.5),
+            v_lerp(b, c, 0.5),
+            v_lerp(c, a, 0.5),
+            v_div(v_add(a, v_add(b, c)), 3.0),
+          ] {
+          if reference.closest(p, chart).distance_sq >
+            self.deviation_limit * self.deviation_limit {
+            return false
+          }
+        }
+        true
+      } catch {
+        _ => false
+      }
+  }
+}
+
+///|
+/// Redistribute original witnesses across a local replacement before committing it.
+/// Every original vertex/mid-edge/centroid sample remains assigned to a close face.
+fn ModelState::check_patch(
+  self : ModelState,
+  old_ids : Array[Int],
+  proposed : Array[ModelFace],
+  moved : Int,
+  point : Vec3,
+) -> Array[ModelFace] raise SurfaceError {
+  if self.projection_guard is None {
+    return proposed
+  }
+  let assigned : Array[Array[Vec3]] = []
+  for _ in proposed {
+    assigned.push([])
+  }
+  for id in old_ids {
+    let old = self.faces[id]
+    for witness in old.witnesses {
+      let mut distance = 1.7976931348623157e308
+      let mut best = -1
+      for index, f in proposed {
+        if f.chart != old.chart {
+          continue
+        }
+        let a = if f.a == moved { point } else { self.points[f.a] }
+        let b = if f.b == moved { point } else { self.points[f.b] }
+        let c = if f.c == moved { point } else { self.points[f.c] }
+        let hit = triangle_hit(a, b, c, witness, index)
+        if hit.distance_sq < distance {
+          distance = hit.distance_sq
+          best = index
+        }
+      }
+      if best < 0 || distance > self.deviation_limit * self.deviation_limit {
+        raise NumericalFailure("source surface witness would be lost")
+      }
+      assigned[best].push(witness)
+    }
+  }
+  let output : Array[ModelFace] = []
+  for i, f in proposed {
+    output.push({ ..f, witnesses: assigned[i], })
+  }
+  output
 }

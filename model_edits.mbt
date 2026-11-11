@@ -15,7 +15,8 @@ fn ModelState::face_ok(
   (
     self.angle_floor == 0.0 ||
     minimum_angle(a, b, c) + 1.0e-8 >= self.angle_floor
-  )
+  ) &&
+  self.reference_close(proposed.chart, a, b, c)
 }
 
 ///|
@@ -107,6 +108,7 @@ fn ModelState::split(
       planned.push(right)
     }
   }
+  let checked = self.check_patch(ids, planned, m, point)
   self.points.push(point)
   self.alive.push(true)
   self.incident.push([])
@@ -117,7 +119,7 @@ fn ModelState::split(
   for id in ids {
     self.detach(id)
   }
-  for face in planned {
+  for face in checked {
     self.append_face(face)
   }
   let key = edge_key(a, b)
@@ -195,11 +197,12 @@ fn ModelState::flip(
     !self.face_ok(right, fr, -1, self.points[u]) {
     raise NumericalFailure("model flip geometry/UV inversion")
   }
+  let checked = self.check_patch(ids, [fl, fr], -1, self.points[u])
   self.detach(ids[0])
   self.detach(ids[1])
-  self.faces[ids[0]] = fl
+  self.faces[ids[0]] = checked[0]
   self.attach(ids[0])
-  self.faces[ids[1]] = fr
+  self.faces[ids[1]] = checked[1]
   self.attach(ids[1])
 }
 
@@ -295,6 +298,12 @@ fn ModelState::collapse(
     }
     planned.push((id, proposed))
   }
+  let checked = self.check_patch(
+    affected,
+    planned.map(fn(item) { item.1 }),
+    keep,
+    point,
+  )
   for id in affected {
     self.detach(id)
   }
@@ -304,8 +313,8 @@ fn ModelState::collapse(
   }
   self.alive[remove] = false
   self.nv -= 1
-  for (id, face) in planned {
-    self.faces[id] = face
+  for i, (id, _) in planned {
+    self.faces[id] = checked[i]
     self.attach(id)
   }
 }

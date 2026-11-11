@@ -1,5 +1,17 @@
 # Geometry job protocol
 
+The original `moonsurface/1` format below is unchanged. The candidate also accepts
+`moonsurface-model/1`: positions/triangles with optional attributes, corner_uvs
+(F×3×2), materials, feature_edges and sharp_angle. Attributes declare name, width,
+interpolation (`linear`, `unit`, `discrete`) and V rows of values.
+
+Model operations: split/flip/collapse (edge pair, optional fraction for split and
+collapse); remesh (target_edge_length, optional iterations, max_operations,
+relaxation, minimum_angle, max_deviation). Complete real jobs are in `fixtures/real/`.
+Results include channels, corner UVs/normals, materials, features, patch labels,
+compact maps and categorized reports. Maps refer to the current operation's Model
+id domain; reimport/compact starts another domain. Errors contain no partial mesh.
+
 The file CLI accepts one UTF-8 JSON request; it does not import common model formats.
 An example with directed quarter-edge splitting:
 

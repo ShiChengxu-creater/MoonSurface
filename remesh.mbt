@@ -26,6 +26,7 @@ pub(all) struct RemeshReport {
   rejected_attributes : Int
   rejected_budget : Int
   minimum_angle : Double
+  max_deviation : Double
   stop : RemeshStop
 }
 
@@ -111,6 +112,7 @@ pub fn remesh_isotropic(
   max_operations? : Int = 20_000,
   relaxation? : Double = 0.5,
   minimum_angle? : Double = 10.0,
+  max_deviation? : Double = 0.0,
 ) -> RemeshResult raise SurfaceError {
   if !finite(target_edge_length) ||
     target_edge_length <= 0.0 ||
@@ -123,7 +125,9 @@ pub fn remesh_isotropic(
     relaxation > 1.0 ||
     !finite(minimum_angle) ||
     minimum_angle < 0.0 ||
-    minimum_angle > 60.0 {
+    minimum_angle > 60.0 ||
+    !finite(max_deviation) ||
+    max_deviation < 0.0 {
     raise InvalidArgument("invalid remeshing options")
   }
   let working = model.copy()
@@ -141,7 +145,37 @@ pub fn remesh_isotropic(
   }
   let before = working.quality()
   s.angle_floor = Double::min(minimum_angle, before.min_angle_degrees)
+  let deviation = if max_deviation == 0.0 {
+    target_edge_length * 0.25
+  } else {
+    max_deviation
+  }
+  s.deviation_limit = deviation / s.scale
+  if !finite(s.deviation_limit) || s.deviation_limit < 1.0e-14 {
+    raise InvalidArgument("projection deviation scale")
+  }
+  for id, f in s.faces {
+    if !f.alive {
+      continue
+    }
+    let a = s.points[f.a]
+    let b = s.points[f.b]
+    let c = s.points[f.c]
+    s.faces[id] = {
+      ..f,
+      witnesses: [
+        a,
+        b,
+        c,
+        v_lerp(a, b, 0.5),
+        v_lerp(b, c, 0.5),
+        v_lerp(c, a, 0.5),
+        v_div(v_add(a, v_add(b, c)), 3.0),
+      ],
+    }
+  }
   let reference = ReferenceSurface::new(s)
+  s.projection_guard = Some(reference)
   let counts = RemeshCounts::{
     attempts: 0,
     splits: 0,
@@ -321,6 +355,7 @@ pub fn remesh_isotropic(
       rejected_attributes: counts.attribute_rejections,
       rejected_budget: counts.budget_rejections,
       minimum_angle,
+      max_deviation: deviation,
       stop,
     },
   }

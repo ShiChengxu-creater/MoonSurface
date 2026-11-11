@@ -1,5 +1,8 @@
 # Public API contract — 0.1.0-alpha.1
 
+The geometry contract below is retained by the 0.2 candidate. New deletion/attribute
+Model APIs have a separate contract in [MODEL_CONTRACT.md](MODEL_CONTRACT.md).
+
 The generated root `pkg.generated.mbti` is the complete signature reference.
 The `exchange` package has one public function: `execute_json(String) -> String`.
 

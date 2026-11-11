@@ -60,8 +60,36 @@ pub fn Model::new(
     }
   }
   let input = mesh.to_indexed()
-  let mut scale = 0.0
+  let mut lo = Vec3::{
+    x: 1.7976931348623157e308,
+    y: 1.7976931348623157e308,
+    z: 1.7976931348623157e308,
+  }
+  let mut hi = v_scale(lo, -1.0)
   for p in input.vertices {
+    lo = {
+      x: Double::min(lo.x, p.x),
+      y: Double::min(lo.y, p.y),
+      z: Double::min(lo.z, p.z),
+    }
+    hi = {
+      x: Double::max(hi.x, p.x),
+      y: Double::max(hi.y, p.y),
+      z: Double::max(hi.z, p.z),
+    }
+  }
+  let origin = if input.vertices.is_empty() {
+    Vec3::{ x: 0.0, y: 0.0, z: 0.0, }
+  } else {
+    Vec3::{
+      x: lerp_scalar(lo.x, hi.x, 0.5),
+      y: lerp_scalar(lo.y, hi.y, 0.5),
+      z: lerp_scalar(lo.z, hi.z, 0.5),
+    }
+  }
+  let shifted = input.vertices.map(fn(p) { v_sub(p, origin) })
+  let mut scale = 0.0
+  for p in shifted {
     scale = Double::max(
       scale,
       Double::max(abs(p.x), Double::max(abs(p.y), abs(p.z))),
@@ -70,12 +98,13 @@ pub fn Model::new(
   if scale == 0.0 {
     scale = 1.0
   }
-  let points = input.vertices.map(fn(p) { v_div(p, scale) })
+  let points = shifted.map(fn(p) { v_div(p, scale) })
   let state = graph_new(
     points,
     attributes.map(attribute_copy),
     scale,
     mesh.limits(),
+    origin~,
   )
   for i, (a, b, c) in input.triangles {
     if degenerate(points[a], points[b], points[c]) {
@@ -97,6 +126,7 @@ pub fn Model::new(
       },
       chart: -1,
       alive: true,
+      witnesses: [],
     })
   }
   let cosine = @math.cos(sharp_angle_degrees * 3.141592653589793 / 180.0)
@@ -171,7 +201,7 @@ pub fn Model::face_count(self : Model) -> Int {
 ///|
 pub fn Model::position(self : Model, vertex : Int) -> Vec3 raise SurfaceError {
   self.state.check_vertex(vertex)
-  v_scale(self.state.points[vertex], self.state.scale)
+  v_add(v_scale(self.state.points[vertex], self.state.scale), self.state.origin)
 }
 
 ///|
@@ -198,7 +228,7 @@ pub fn Model::compact(self : Model) -> ModelSnapshot raise SurfaceError {
   for i, p in s.points {
     if s.alive[i] {
       vm[i] = points.length()
-      points.push(v_scale(p, s.scale))
+      points.push(v_add(v_scale(p, s.scale), s.origin))
     }
   }
   let triangles : Array[(Int, Int, Int)] = []

@@ -1,0 +1,24 @@
+{
+  "name": "Suzanne",
+  "revision": "8f492390ddc7a2ae221a1369ef560589cf8c70fb",
+  "license": "CC0-1.0",
+  "upstream": "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/8f492390ddc7a2ae221a1369ef560589cf8c70fb/Models/Suzanne/README.md",
+  "source_sha256": {
+    "Suzanne.gltf": "7e8ae013010aff530162ef2795cec74c2646019e224af17bcfb691664f0f0aec",
+    "Suzanne.bin": "b85c2727aa41318e00673d8892f5879d46fb6e476e280f28ee1febd07602b6b8"
+  },
+  "input_sha256": "c5c5d326ec04eb2bb5beb261da352503f022e60383f418d33a3c96a1f52de16c",
+  "stats": {
+    "vertices": 2012,
+    "edges": 5946,
+    "faces": 3936,
+    "boundary_edges": 84,
+    "boundary_loops": 4,
+    "components": 3,
+    "euler": 2
+  },
+  "extraction": "first/only mesh in mesh-local coordinates; no textures or scene transforms; exact position weld; original corner UV/material; authored normal seams protected",
+  "normal_seam_edges": 0,
+  "target_edge_length": 0.1670082803268749,
+  "added_attribute": "analytic position_probe only; not claimed to be an original authored attribute"
+}

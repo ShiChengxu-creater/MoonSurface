@@ -15,7 +15,7 @@ import tempfile
 import urllib.request
 
 from common import ROOT, build_environment
-from consumer import TESTS
+from consumer import consumer_tests
 
 
 def main():
@@ -38,7 +38,8 @@ def main():
         'version = "0.0.0"\npreferred_target = "wasm-gc"\n', encoding='utf-8')
     (work/'moon.pkg').write_text('import {\n "ShiChengxu/moonsurface" @surface,\n'
         ' "ShiChengxu/moonsurface/exchange" @job,\n "moonbitlang/core/json",\n} for "test"\n', encoding='utf-8')
-    (work/'consumer_test.mbt').write_text(TESTS, encoding='utf-8')
+    test_source, test_count = consumer_tests(args.version)
+    (work/'consumer_test.mbt').write_text(test_source, encoding='utf-8')
     commands = []
     proxies = urllib.request.getproxies()
 
@@ -113,13 +114,17 @@ def main():
         for verb in ['check', 'build']:
             run(['moon', verb, '--target', target, '--deny-warn'], target)
         output = run(['moon', 'test', '--target', target, '--deny-warn'], target)
-        assert 'Total tests: 4, passed: 4, failed: 0' in output, output
-        results.append(dict(target=target, tests=4, passed=4))
-        print(f'Registry consumer {target}: 4/4 passed ({module}@{args.version})', flush=True)
+        assert f'Total tests: {test_count}, passed: {test_count}, failed: 0' in output, output
+        results.append(dict(target=target, tests=test_count, passed=test_count))
+        print(f'Registry consumer {target}: {test_count}/{test_count} passed ({module}@{args.version})', flush=True)
     readme_result = None
     if args.readme:
-        blocks = re.findall(r'```(?:toml|moonbit)\n(.*?)\n```',
-                            (ROOT/'README.md').read_text(encoding='utf-8'), re.S)
+        readme = (ROOT/'README.md').read_text(encoding='utf-8')
+        current_blocks = re.findall(r'```(?:toml|moonbit)\n(.*?)\n```',readme,re.S)
+        if (len(current_blocks)!=4 or module+'@'+args.version not in current_blocks[1]) and expected_ref:
+            readme = subprocess.run(['git','show',expected_ref+':README.md'],cwd=ROOT,
+                check=True,capture_output=True,text=True,encoding='utf-8').stdout
+        blocks = re.findall(r'```(?:toml|moonbit)\n(.*?)\n```',readme,re.S)
         assert len(blocks) == 4 and module+'@'+args.version in blocks[1]
         app = work/'readme-consumer'
         app.mkdir()

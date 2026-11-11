@@ -93,6 +93,30 @@ test "consumer geometry job package is independently importable" {
 }
 '''
 
+MODEL_TESTS = r'''///|
+test "consumer/attribute-aware model and protected remeshing" {
+  let mesh = @surface.Mesh::from_indexed([
+    {x:0.0,y:0.0,z:0.0},{x:1.0,y:0.0,z:0.0},{x:0.0,y:1.0,z:0.0}],[(0,1,2)])
+  let attr = @surface.VertexAttribute::new("field",1,@surface.Linear,[[0],[1],[1]])
+  let model = @surface.Model::new(mesh,attributes=[attr])
+  assert_true(model.is_protected(0,1))
+  let result = @surface.remesh_isotropic(model,0.4,iterations=1,max_operations=200)
+  result.output.mesh.validate()
+  assert_true(result.report.splits > 0)
+  assert_eq(result.output.attributes[0].values().length(),result.output.mesh.vertex_count())
+  assert_eq(model.vertex_count(),3)
+  let export = model.compact()
+  let normals = model.corner_normals()
+  assert_eq(export.face_charts.length(),1)
+  assert_eq(normals[0].0.z,1.0)
+}
+'''
+
+
+def consumer_tests(version):
+    numeric = tuple(int(v) for v in version.split('-')[0].split('.'))
+    return (TESTS+MODEL_TESTS,5) if numeric >= (0,2,0) else (TESTS,4)
+
 
 def unpack(data, destination):
     with zipfile.ZipFile(BytesIO(data)) as archive:
@@ -150,13 +174,14 @@ def main():
             'version = "0.0.0"\nimport { "ShiChengxu/moonsurface@'+version+'" }\n', encoding='utf-8')
         (consumer/'moon.pkg').write_text('import {\n "ShiChengxu/moonsurface" @surface,\n'
             ' "ShiChengxu/moonsurface/exchange" @job,\n "moonbitlang/core/json",\n} for "test"\n', encoding='utf-8')
-        (consumer/'consumer_test.mbt').write_text(TESTS, encoding='utf-8')
+        test_source, test_count = consumer_tests(version)
+        (consumer/'consumer_test.mbt').write_text(test_source, encoding='utf-8')
         run(['moon', 'check', '--target', args.target, '--deny-warn', str(consumer)],
             cwd=work, target=args.target)
         result = run(['moon', 'test', '--target', args.target, '--deny-warn', str(consumer)],
                      cwd=work, target=args.target, capture=True)
-        assert 'Total tests: 4, passed: 4, failed: 0' in result.stdout, result.stdout+result.stderr
-        modes.append(dict(mode=mode, tests=4, archive_entries=count))
+        assert f'Total tests: {test_count}, passed: {test_count}, failed: 0' in result.stdout, result.stdout+result.stderr
+        modes.append(dict(mode=mode, tests=test_count, archive_entries=count))
     report = dict(evidence_base(args.target, [['python', 'tools/consumer.py', '--target', args.target],
                                             ['moon', 'package']]),
                   status='passed', timestamp_utc=datetime.now(timezone.utc).isoformat(),
@@ -164,7 +189,7 @@ def main():
                   dependency_resolution='explicit local workspace members; no registry installation')
     output = ROOT/'artifacts'/f'consumer-{args.target}.json'
     output.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    print(f'Consumer {args.target}: Git snapshot 4/4, actual moon package ZIP 4/4; {package.name}')
+    print(f'Consumer {args.target}: Git snapshot {test_count}/{test_count}, actual moon package ZIP {test_count}/{test_count}; {package.name}')
 
 
 if __name__ == '__main__':

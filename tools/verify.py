@@ -19,15 +19,18 @@ def main():
     run(['moon', 'fmt', '--check'], target=args.target)
     run([sys.executable, 'tools/check.py', '--target', args.target], target=args.target)
     examples = {}
-    for name in ['local_edit', 'loop_refine']:
+    for name in ['local_edit', 'loop_refine', 'feature_remesh']:
         result = run(['moon', 'run', f'examples/{name}', '--target', args.target, '--deny-warn'],
                      target=args.target, capture=True)
         examples[name] = result.stdout.strip().splitlines()
     assert examples['local_edit'] == ['local_edit: V=5 E=8 F=4 chi=1 boundary=4']
+    assert examples['feature_remesh'] == ['feature_remesh: attributes=2 materials=2 protected_crease=true']
     assert examples['loop_refine'] == [f'loop_refine: level={i} {counts} chi=2' for i, counts in
                                      enumerate(['V=4 E=6 F=4', 'V=10 E=24 F=16', 'V=34 E=96 F=64'])]
     for script in ['reference', 'consumer']:
         run([sys.executable, f'tools/{script}.py', '--target', args.target], target=args.target)
+    run([sys.executable,'tools/model_verify.py','--target',args.target,
+         *(['--real'] if args.target=='js' else [])],target=args.target)
     if args.target == 'js':
         run([sys.executable, 'tools/cli_check.py'], target='js')
         run([sys.executable, 'tools/readme_check.py'], target='js')

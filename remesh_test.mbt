@@ -115,6 +115,32 @@ test "storage ceiling is an explicit remesh stop and preserves the input" {
 }
 
 ///|
+test "model remeshing recenters large translations before geometric work" {
+  let offset = 1.0e12
+  let mesh = @moonsurface.Mesh::from_indexed(
+    [
+      { x: offset, y: offset, z: 0.0, },
+      { x: offset + 2.0, y: offset, z: 0.0, },
+      { x: offset, y: offset + 2.0, z: 0.0, },
+    ],
+    [(0, 1, 2)],
+  )
+  let model = @moonsurface.Model::new(mesh)
+  let result = @moonsurface.remesh_isotropic(
+    model,
+    0.5,
+    iterations=1,
+    max_operations=200,
+  )
+  result.output.mesh.validate()
+  assert_true(result.output.mesh.face_count() > 1)
+  assert_eq(
+    result.output.mesh.position(result.output.vertex_map[0]),
+    mesh.position(0),
+  )
+}
+
+///|
 test "remeshing retains material crease and independent UV islands" {
   let input = @moonsurface.Model::new(
     @moonsurface.Mesh::from_indexed(

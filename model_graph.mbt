@@ -8,6 +8,7 @@ priv struct ModelFace {
   material : Int
   chart : Int
   alive : Bool
+  witnesses : Array[Vec3]
 }
 
 ///|
@@ -21,10 +22,13 @@ priv struct ModelState {
   constraints : Map[(Int, Int), Bool]
   attributes : Array[VertexAttribute]
   scale : Double
+  origin : Vec3
   limits : Limits
   mut nv : Int
   mut nf : Int
   mut angle_floor : Double
+  mut projection_guard : ReferenceSurface?
+  mut deviation_limit : Double
 }
 
 ///|
@@ -53,6 +57,7 @@ fn graph_new(
   attributes : Array[VertexAttribute],
   scale : Double,
   limits : Limits,
+  origin? : Vec3 = { x: 0.0, y: 0.0, z: 0.0, },
 ) -> ModelState {
   let incident : Array[Array[Int]] = []
   for _ in points {
@@ -62,6 +67,7 @@ fn graph_new(
     points,
     attributes,
     scale,
+    origin,
     limits,
     faces: [],
     alive: Array::make(points.length(), true),
@@ -72,6 +78,8 @@ fn graph_new(
     nv: points.length(),
     nf: 0,
     angle_floor: 0.0,
+    projection_guard: None,
+    deviation_limit: 0.0,
   }
 }
 
@@ -117,7 +125,7 @@ fn ModelState::detach(self : ModelState, id : Int) -> Unit {
     }
   }
   self.lookup.remove(face_key(f.a, f.b, f.c))
-  self.faces[id] = { ..f, alive: false, }
+  self.faces[id] = { ..f, alive: false, witnesses: [], }
   self.nf -= 1
 }
 
@@ -200,6 +208,7 @@ fn ModelState::copy(self : ModelState) -> ModelState {
     self.attributes.map(attribute_copy),
     self.scale,
     self.limits,
+    origin=self.origin,
   )
   for i, flag in self.alive {
     out.alive[i] = flag

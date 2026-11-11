@@ -141,7 +141,7 @@ fn model_execute(fields : Map[String, Json]) -> Json raise Error {
       String("remesh") => {
         keys(op, [
           "kind", "target_edge_length", "iterations", "max_operations", "relaxation",
-          "minimum_angle",
+          "minimum_angle", "max_deviation",
         ])
         let result = @surface.remesh_isotropic(
           model,
@@ -150,6 +150,7 @@ fn model_execute(fields : Map[String, Json]) -> Json raise Error {
           max_operations=optional_int(op, "max_operations", 20_000),
           relaxation=optional_number(op, "relaxation", 0.5),
           minimum_angle=optional_number(op, "minimum_angle", 10.0),
+          max_deviation=optional_number(op, "max_deviation", 0.0),
         )
         let report = result.report
         let reason = match report.stop {
@@ -174,6 +175,7 @@ fn model_execute(fields : Map[String, Json]) -> Json raise Error {
               ("rejected_attributes", j_int(report.rejected_attributes)),
               ("rejected_budget", j_int(report.rejected_budget)),
               ("minimum_angle", Json::number(report.minimum_angle)),
+              ("max_deviation", Json::number(report.max_deviation)),
               ("stop", Json::string(reason)),
               ("before", quality(result.before)),
               ("after", quality(result.after)),

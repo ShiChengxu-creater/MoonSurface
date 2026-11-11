@@ -2,81 +2,69 @@
 
 [![validation](https://github.com/ShiChengxu-creater/MoonSurface/actions/workflows/ci.yml/badge.svg)](https://github.com/ShiChengxu-creater/MoonSurface/actions/workflows/ci.yml)
 
-纯 MoonBit 的三角曲面处理库，供渲染器、模型工具与几何程序使用。
-输入顶点/三角形数组，完成受检的拓扑编辑和平滑细分，再输出普通数组。
-计算核心可在 native、JS、wasm-gc 运行，不依赖 Three.js 或 C++ 绑定。
+纯 MoonBit 的模型表面处理库：传递属性、保留锐边与接缝，执行局部编辑及各向同性重网格化，
+输出可交给渲染器、模型工具或资产管线的几何、UV、材质和法线数据。
+核心支持 native、JS、wasm-gc，不依赖 C++/Python 几何库或渲染引擎。
 
-**当前版本 `0.1.0-alpha.1`：十一月项目的初验开发里程碑。**
-已实现拓扑、split/flip、原始 Loop 权重和两条完整示例流程。
-collapse、压缩映射、QEM 和第三个简化场景属于后续阶段，当前没有这些 API。
-该版本已发布到 [Mooncakes](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.1.0-alpha.1)，
-真实注册表消费者在三个后端验证通过。初验工程完成不等于主办方已经审核通过。
-完整初验说明见 [INITIAL_REVIEW.md](docs/INITIAL_REVIEW.md)。
+**当前源码候选 `0.2.0-alpha.1`，尚未发布。** 已发布的
+[`0.1.0-alpha.1`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.1.0-alpha.1)
+仅有原 Mesh/Loop 能力；新 Model API 使用当前源码或候选 ZIP。
+QEM 仍未实现，重网格化的短边折叠不等于 QEM。工程结果不代替主办方审核。
 
-## 能解决什么
+## 模型处理能力
 
 | 任务 | 当前行为 |
 | --- | --- |
-| 从三角数组建立可靠连接关系 | 拒绝越界、非有限坐标、重复/退化面、朝向冲突、非流形边和点扇区；支持边界与多个分量 |
-| 修改网格后继续使用 | 拆分内部/边界边、翻转合法内部对角线；可恢复检查错误不会留下部分编辑 |
-| 让粗三角曲面变平滑 | 原始 Loop 内点权重、内部边 3/8–1/8 规则、边界规则、同步更新旧点、逐层预算和结果 |
-| 接回渲染或其他算法 | 导出坐标和索引、重算法线、边界环、拓扑统计；数据所有权与调用方分离 |
+| 顶点属性 | 1–4 维线性数值、三维单位向量、离散通道；插值/归一化，冲突前拒绝 |
+| 纹理/材质 | 面角 UV0 独立保存接缝两侧值，逐面材质继承；拒绝 UV 翻转 |
+| 特征保护 | 二面角、显式边、边界、UV/材质/离散界面形成约束；特征顶点保守锁定，分裂继承约束 |
+| 编辑/导出 | Model split/flip/受检内部 collapse、存活标记与 compact 映射；按特征分组重算面角法线 |
+| 重网格化 | 拆长边、折短边、价数改善、切向松弛、参考 BVH 投影和属性重采样 |
+| 质量约束 | 最小角底线、原表面见证点及新面采样距离检查；操作/拒绝分类与停止原因 |
+| 原几何能力 | Mesh 半边、边界与邻域、独立数组导出、几何 Loop 与法线接口继续保留 |
 
-Loop 会移动旧顶点。例如单三角形的原点经过一级细分变为 `(0.25, 0.25, 0)`，
-不是仅在边上加中点。已有相近 MoonBit 项目及范围差异见
-[RELATED_WORK.md](docs/RELATED_WORK.md)；本项目不声称是第一个网格库。
+详细范围见 [MODEL_CONTRACT.md](docs/MODEL_CONTRACT.md)，真实模型与独立对照见
+[REAL_MODELS.md](docs/REAL_MODELS.md)。骨骼权重、形变目标、多套 UV、完整 glTF 往返与
+全局自交检查不在当前范围。Loop 是几何接口，未宣称传递 Model 属性。
 
 ## 获取与运行
 
-固定工具链：`moonc 0.10.14+7d59c7ec9`，`moon/moonrun 0.1.20260920`。
-Node.js 22+ 用于 JS/文件 CLI；Python 3.12+ 只运行开发验证工具。
-核心只使用随工具链提供的 MoonBit 标准库。Windows native 需要 MSVC x64 C++ 工具。
-CI 固定安装器版本并核对编译器字符串；未声称这是最新工具链。
+固定编译器 `moonc 0.10.14+7d59c7ec9`，moon/moonrun `0.1.20260920`。
+Node.js 22+ 运行文件宿主；Python 3.12+、NumPy 2.2.6 仅用于独立验证。
+Windows native 需要 MSVC x64；验证脚本通过 `vswhere` 初始化已有工具链。
 
 ```sh
 git clone https://github.com/ShiChengxu-creater/MoonSurface.git
 cd MoonSurface
+python -m pip install -r requirements-dev.txt
 python tools/check.py --target js
 moon run examples/local_edit --target js
 moon run examples/loop_refine --target js
+moon run examples/feature_remesh --target js
 ```
 
-输出：
+三个例子分别完成局部编辑、四面体细分、带 UV/材质和离散通道的特征保护重网格化。
+第三个实际检查属性对应及原锐边覆盖。替换 target 可用 native 或 wasm-gc。
 
-```text
-local_edit: V=5 E=8 F=4 chi=1 boundary=4
-loop_refine: level=0 V=4 E=6 F=4 chi=2
-loop_refine: level=1 V=10 E=24 F=16 chi=2
-loop_refine: level=2 V=34 E=96 F=64 chi=2
-```
-
-第一个示例建立方片、翻转对角线、拆分新对角线、校验连接、导出重建并计算法线。
-第二个示例输入四面体、预检两级细分、执行并校验 64 面输出，同时确认输入未变。
-替换 `--target` 可用 `native` 或 `wasm-gc`。Windows native 推荐用下方 Python
-验证入口，它会通过 `vswhere` 初始化已安装的 MSVC 环境。
-
-## 作为独立模块使用
-
-### 从 Mooncakes 安装
-
-在你的 MoonBit 项目中添加确切版本：
+真实模型是许可明确的 glTF 局部几何，包含原始面角 UV 和材质；无需下载贴图：
 
 ```sh
-moon add ShiChengxu/moonsurface@0.1.0-alpha.1
+moon build --target js --deny-warn
+node tools/moonsurface.mjs fixtures/real/avocado/input.json --out avocado-remeshed.json
+node tools/moonsurface.mjs fixtures/real/suzanne/input.json --out suzanne-remeshed.json
 ```
 
-在调用方的 `moon.pkg` 导入 `ShiChengxu/moonsurface` 并取别名 `@surface`，即可使用下方
-`main.mbt` 中的 API。下方三个 `app/` 文件也可直接放入一个独立目录，通过
-`moon run . --target js` 运行；这种注册表接入不需要 `moon.work` 或本地 MoonSurface 源码。
+文件 CLI 只创建新输出。输入有界 UTF-8 JSON；Node 负责文件宿主，JSON/属性/几何/报告由
+MoonBit 完成。协议见 [JOB_FORMAT.md](docs/JOB_FORMAT.md)。
 
-### 从源码或 ZIP 接入
+## 独立模块接入
 
-采用**本地 workspace 依赖**时，以下目录结构和导入方法已由消费者测试验证：
+候选源码或实际 ZIP 作为本地 workspace 成员。不要把旧注册表版本当作已有新 Model API。
 
 ```text
 workspace/
   moon.work
-  MoonSurface/       # 此仓库，或实际 moon package ZIP 的解压目录
+  MoonSurface/
   app/
     moon.mod
     moon.pkg
@@ -94,7 +82,7 @@ members = [ "./MoonSurface", "./app" ]
 ```toml
 name = "local/surface_demo"
 version = "0.0.0"
-import { "ShiChengxu/moonsurface@0.1.0-alpha.1" }
+import { "ShiChengxu/moonsurface@0.2.0-alpha.1" }
 ```
 
 `app/moon.pkg`：
@@ -104,7 +92,7 @@ import { "ShiChengxu/moonsurface" @surface }
 pkgtype(kind: "executable")
 ```
 
-`app/main.mbt`：
+`app/main.mbt`（原几何接口也继续支持）：
 
 ```moonbit
 fn main {
@@ -124,63 +112,45 @@ fn main {
 }
 ```
 
-在 workspace 中运行 `moon run app --target js`。`try!` 用于示例的快速失败；
-应用应捕获 `SurfaceError`。所有实际公开签名在 [pkg.generated.mbti](pkg.generated.mbti)，
-行为约定见 [API.md](docs/API.md)。这组 workspace 步骤验证源码接入；
-单独的注册表消费记录见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
+在 workspace 中运行 `moon run app --target js`。新流程使用 `Model::new` 接收几何与属性，
+`remesh_isotropic` 返回快照与报告。完整调用见
+[feature_remesh/main.mbt](examples/feature_remesh/main.mbt)，签名见 [pkg.generated.mbti](pkg.generated.mbti)。
+实际应用应捕获 `SurfaceError`，示例 `try!` 仅用于快速失败。
 
-## 文件 CLI
+## 验证
 
-```sh
-moon build --target js --deny-warn
-node tools/moonsurface.mjs examples/data/triangle.json
-node tools/moonsurface.mjs examples/data/patch.json --out edited.json
-```
-
-`--out` 只创建新文件，已有输出和输入不会被覆盖。失败退出码为 2。
-输入只接受 UTF-8 JSON，16 MiB 上限；不直接读取 OBJ/STL。
-JSON 解析、参数检查和几何处理由 MoonBit 的 `exchange` 包完成，Node 只处理文件和桥接。
-文件协议、失败行为和完整输入见 [JOB_FORMAT.md](docs/JOB_FORMAT.md) 与 `examples/data/`。
-原始 `cmd/moonsurface` 接受一个 JSON 字符串参数，可跨三个后端执行小任务；
-它用 `{ "ok": false, ... }` 报告业务失败，文件 CLI 负责将其转换为非零退出码。
-
-## 验证与 CI
-
-提交修改后，在干净工作区运行：
+在干净已提交源码中运行：
 
 ```sh
+python -m pip install -r requirements-dev.txt
 python tools/verify.py --target js
 python tools/verify.py --target wasm-gc
 python tools/verify.py --target native
 ```
 
-每次验证显式运行 `moon check/build/test --deny-warn`、两个示例、独立 Python
-三角邻接/Loop 参考、干净 Git 快照消费者、**实际 `moon package` ZIP 消费者**，
-并核对格式和生成接口。JS 验证另跑 13 项文件 CLI 检查。
-验证入口要求当前提交已有至少 10 次历史；提交是否有效仍需查看实际内容。
+覆盖格式/接口漂移、显式 check/build/test、三个示例、Loop 独立参考、源码/实际 ZIP 消费者、
+六个固定种子模型任务及四类损坏结果负控。JS 另跑真实模型与 13 项文件 CLI 检查。
+当前 MoonBit 测试 40 项/后端，候选源码/ZIP 消费者各 5 项；数量不代表覆盖率。
 
-当前 MoonBit 测试 28 项/后端；独立参考每后端 40 个正常任务、8 个拒绝任务和
-3 个错误注入检查；两类消费者各 4 项公开 API 测试。这些数量不代表覆盖率。
-参考是本仓库独立编写的数学实现；OpenMesh 外部对照、规模/性能评估仍待后续完成。
-
-GitHub Actions 包含 Ubuntu native/JS/wasm-gc 和 Windows native 四个任务，
-Windows 另验证 Node CLI；各任务上传 `artifacts/*.json`。
-本地报告也在 `artifacts/`，每份带源码提交和时间。对应提交的远端运行以
-[Actions 页面](https://github.com/ShiChengxu-creater/MoonSurface/actions)为准。
-
-已发布版本还可以单独复验真实注册表安装，此命令需要网络，不属于离线源码/ZIP 检查：
+外部对照另外运行，需要可选依赖：
 
 ```sh
-python tools/registry_consumer.py --version 0.1.0-alpha.1 --source-ref 4aae55e --readme
+python -m pip install -r requirements-reference.txt
+python tools/model_verify.py --target js --real --reference
 ```
 
-## 边界与许可
+保留原模型、MoonSurface 属性模式/几何模式、MeshLab 几何模式的实际输出。约束策略不同，
+不宣称全面质量或性能优势。报告在 `artifacts/model-*.json`，含源码、参数、环境、输入/输出哈希。
+采样距离不是连续曲面的严格 Hausdorff 上界。
 
-只接收一致组合朝向的三角二维流形；空网格允许，非空网格的孤立点拒绝。
-不自动焊接、修洞、修朝向，不检查全局自交，不保留 UV/材质/骨骼等属性。
-拓扑统计的 Euler 数不被当成任意网格的属数证明。
-细长或浮点无法区分的三角形会被拒绝；容差、预算和复杂度见
-[NUMERICS.md](docs/NUMERICS.md)。计数上限不是进程内存保证。
+CI 包含 Linux native/JS/wasm-gc 和 Windows native；Windows 另执行固定 MeshLab 对照。
+对应提交状态见 [Actions](https://github.com/ShiChengxu-creater/MoonSurface/actions)。
+旧发布的安装记录保留于 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)，新候选尚未发布。
 
-Apache-2.0。算法资料、工具经验来源和 AI 辅助分别见
-[THIRD_PARTY.md](THIRD_PARTY.md)、[AI_USAGE.md](AI_USAGE.md)。
+## 许可证与边界
+
+MoonBit 库及主要验证代码为 Apache-2.0，真实模型为 CC0-1.0；可选独立
+`reference_tools/meshlab_reference.py` 驱动为 GPL-3.0-only，许可证随目录保留。
+没有随包分发 MeshLab 二进制。来源与 AI 辅助见 [THIRD_PARTY.md](THIRD_PARTY.md)、[AI_USAGE.md](AI_USAGE.md)。
+计数预算不是 RSS 保证，约束可能使目标边长无法全部达到。数值政策见
+[NUMERICS.md](docs/NUMERICS.md)，模型细节见 [MODEL_CONTRACT.md](docs/MODEL_CONTRACT.md)。

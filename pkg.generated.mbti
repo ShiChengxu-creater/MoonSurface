@@ -6,7 +6,7 @@ import {
 }
 
 // Values
-pub fn remesh_isotropic(Model, Double, iterations? : Int, max_operations? : Int, relaxation? : Double, minimum_angle? : Double) -> RemeshResult raise SurfaceError
+pub fn remesh_isotropic(Model, Double, iterations? : Int, max_operations? : Int, relaxation? : Double, minimum_angle? : Double, max_deviation? : Double) -> RemeshResult raise SurfaceError
 
 pub fn subdivide_loop(Mesh, Int) -> LoopResult raise SurfaceError
 
@@ -175,6 +175,7 @@ pub(all) struct RemeshReport {
   rejected_attributes : Int
   rejected_budget : Int
   minimum_angle : Double
+  max_deviation : Double
   stop : RemeshStop
 }
 

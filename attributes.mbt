@@ -132,7 +132,7 @@ fn uv_equal(a : Vec2, b : Vec2) -> Bool {
 ///|
 fn uv_sign(uv : CornerUV) -> Double {
   let scale = Double::max(
-    1.0,
+    0.0,
     Double::max(
       Double::max(abs(uv.a.x), abs(uv.a.y)),
       Double::max(
@@ -141,11 +141,21 @@ fn uv_sign(uv : CornerUV) -> Double {
       ),
     ),
   )
+  if scale == 0.0 {
+    return 0.0
+  }
   let ux = uv.b.x / scale - uv.a.x / scale
   let uy = uv.b.y / scale - uv.a.y / scale
   let vx = uv.c.x / scale - uv.a.x / scale
   let vy = uv.c.y / scale - uv.a.y / scale
-  ux * vy - uy * vx
+  let edge = Double::max(
+    abs(ux),
+    Double::max(abs(uy), Double::max(abs(vx), abs(vy))),
+  )
+  if edge == 0.0 {
+    return 0.0
+  }
+  ux / edge * (vy / edge) - uy / edge * (vx / edge)
 }
 
 ///|

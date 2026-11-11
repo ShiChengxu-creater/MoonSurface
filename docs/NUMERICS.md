@@ -1,5 +1,9 @@
 # Numeric and resource policy — initial milestone
 
+The original Mesh/Loop policy below remains. The 0.2 Model layer additionally uses
+bounds recentering, an effective angle floor and bidirectional finite sample guards;
+see [MODEL_CONTRACT.md](MODEL_CONTRACT.md). These are not continuous Hausdorff bounds.
+
 Coordinates are finite IEEE-754 `Double`. No exact-predicate or global intersection
 guarantee is claimed. The unit tests include coordinates near 1e−300 and 1e300;
 this is a tested example range, not a guarantee that every mesh at those scales works.
