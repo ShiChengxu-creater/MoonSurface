@@ -24,6 +24,11 @@ the public product repository.
 | Published version | [REGISTRY_RELEASE](REGISTRY_RELEASE.md): 0.2 alpha registry download, source/hash and three-target proof |
 | License and provenance | Apache-2.0 core; CC0 assets; separately licensed optional GPL reference driver; THIRD_PARTY/AI_USAGE |
 
+Local candidate measurements and exact source revisions are summarized in
+[final-review.json](evidence/final-review.json); the scale table and visible quality
+limits are in [SCALE.md](SCALE.md). A later documentation commit does not change the
+recorded measurement revisions.
+
 ## Verification commands
 
 Use the pinned compiler from README, Python 3.12+ and Node 22+. Native Windows

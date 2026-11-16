@@ -1,0 +1,736 @@
+{
+  "recorded_at": "2026-11-16T10:18:31.125073+00:00",
+  "version": "0.2.0",
+  "publication": "source candidate; not yet published",
+  "core_tests_per_target": 46,
+  "verification": {
+    "native": {
+      "source_commit": "cb348daa36265c7fcbe3481f534d47178602e455",
+      "source_dirty": false,
+      "status": "passed",
+      "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+      "platform": "Windows-11-10.0.26200-SP0"
+    },
+    "js": {
+      "source_commit": "cb348daa36265c7fcbe3481f534d47178602e455",
+      "source_dirty": false,
+      "status": "passed",
+      "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+      "platform": "Windows-11-10.0.26200-SP0"
+    },
+    "wasm-gc": {
+      "source_commit": "cb348daa36265c7fcbe3481f534d47178602e455",
+      "source_dirty": false,
+      "status": "passed",
+      "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+      "platform": "Windows-11-10.0.26200-SP0"
+    }
+  },
+  "consumer_tests_per_mode": 5,
+  "reports": {
+    "release-jobs.json": {
+      "executed_at": "2026-11-16T10:11:35.379958+00:00",
+      "source_commit": "cb348daa36265c7fcbe3481f534d47178602e455",
+      "source_tree": "877f1de555afd269ce830889471053eba6b4b8fd",
+      "source_dirty": false,
+      "module": "ShiChengxu/moonsurface",
+      "version": "0.2.0",
+      "target": "js",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.9",
+      "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+      "node": "v24.22.1",
+      "commands": [
+        [
+          "python",
+          "tools/release_check.py"
+        ]
+      ],
+      "status": "passed",
+      "cases": [
+        {
+          "name": "similarity-1.0",
+          "before": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 35.949725720643684,
+            "mean_min_angle_degrees": 41.14909549691046,
+            "mean_triangle_quality": 0.8550678734342092,
+            "edge_min": 0.21346700970023846,
+            "edge_max": 0.4070162230955119,
+            "edge_mean": 0.27991310007139386,
+            "edge_cv": 0.19765845821971445
+          },
+          "after": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 35.949725720643684,
+            "mean_min_angle_degrees": 42.56968136792148,
+            "mean_triangle_quality": 0.8602766593912929,
+            "edge_min": 0.21346700970023846,
+            "edge_max": 0.3846299265557797,
+            "edge_mean": 0.279822073907309,
+            "edge_cv": 0.18211365834634372
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 36,
+            "splits": 0,
+            "collapses": 0,
+            "flips": 0,
+            "relaxed": 18,
+            "rejected": 18,
+            "rejected_topology": 18,
+            "rejected_geometry": 0,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 0.08,
+            "stop": "iteration_limit"
+          },
+          "protected_edges": 16,
+          "protected_vertices": 16,
+          "max_protected_vertex_drift": 0.0,
+          "sampled_corner_uv_max_error": 7.105427357601002e-15,
+          "attribute_errors": {
+            "position_probe_max": 1.4210854715202004e-14
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "output_sha256": "9511841904022a6286b5bfdf5aa66609eb51982b85b51727fb594b20e91fb256"
+        },
+        {
+          "name": "similarity-0.001",
+          "before": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 35.949725720581235,
+            "mean_min_angle_degrees": 41.14909549682483,
+            "mean_triangle_quality": 0.8550678734337218,
+            "edge_min": 0.00021346700970070742,
+            "edge_max": 0.0004070162231015516,
+            "edge_mean": 0.00027991310007224906,
+            "edge_cv": 0.19765845822120623
+          },
+          "after": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 35.949725720581235,
+            "mean_min_angle_degrees": 42.569681367898454,
+            "mean_triangle_quality": 0.8602766593908233,
+            "edge_min": 0.00021346700970070742,
+            "edge_max": 0.000384629926561661,
+            "edge_mean": 0.0002798220739081749,
+            "edge_cv": 0.18211365834721194
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 36,
+            "splits": 0,
+            "collapses": 0,
+            "flips": 0,
+            "relaxed": 18,
+            "rejected": 18,
+            "rejected_topology": 18,
+            "rejected_geometry": 0,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 8e-05,
+            "stop": "iteration_limit"
+          },
+          "protected_edges": 16,
+          "protected_vertices": 16,
+          "max_protected_vertex_drift": 0.0,
+          "sampled_corner_uv_max_error": 5.131561842119936e-12,
+          "attribute_errors": {
+            "position_probe_max": 1.4210854715202004e-14
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "output_sha256": "0545b20ed2ca588cd6a20f7d505b0c619a3aceefc4dabf038c52fbf220ef1bc3"
+        },
+        {
+          "name": "similarity-1000.0",
+          "before": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 35.949725720643904,
+            "mean_min_angle_degrees": 41.14909549691055,
+            "mean_triangle_quality": 0.8550678734342098,
+            "edge_min": 213.4670097002405,
+            "edge_max": 407.0162230955075,
+            "edge_mean": 279.91310007139384,
+            "edge_cv": 0.1976584582197129
+          },
+          "after": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 35.949725720643904,
+            "mean_min_angle_degrees": 42.569681367921696,
+            "mean_triangle_quality": 0.8602766593912937,
+            "edge_min": 213.4670097002405,
+            "edge_max": 384.62992655578097,
+            "edge_mean": 279.822073907309,
+            "edge_cv": 0.18211365834634177
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 36,
+            "splits": 0,
+            "collapses": 0,
+            "flips": 0,
+            "relaxed": 18,
+            "rejected": 18,
+            "rejected_topology": 18,
+            "rejected_geometry": 0,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 80,
+            "stop": "iteration_limit"
+          },
+          "protected_edges": 16,
+          "protected_vertices": 16,
+          "max_protected_vertex_drift": 0.0,
+          "sampled_corner_uv_max_error": 1.1102230246251565e-16,
+          "attribute_errors": {
+            "position_probe_max": 1.1368683772161603e-13
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "output_sha256": "30d69bce76a634b4269e44dd0e3d1abaa8faa2fc4732282ed0aa848125824abb"
+        },
+        {
+          "name": "folded-material-uv",
+          "before": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 36.485318223661125,
+            "mean_min_angle_degrees": 41.21971260075447,
+            "mean_triangle_quality": 0.8549175706169391,
+            "edge_min": 0.21769448959396534,
+            "edge_max": 0.41088064080626574,
+            "edge_mean": 0.28268969620806456,
+            "edge_cv": 0.19785768136615672
+          },
+          "after": {
+            "vertices": 25,
+            "edges": 56,
+            "faces": 32,
+            "boundary_edges": 16,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 36.485318223661125,
+            "mean_min_angle_degrees": 42.165104770916734,
+            "mean_triangle_quality": 0.8586079499920339,
+            "edge_min": 0.21769448959396534,
+            "edge_max": 0.3878480769107926,
+            "edge_mean": 0.28267831287346157,
+            "edge_cv": 0.18445011003368075
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 20,
+            "splits": 0,
+            "collapses": 0,
+            "flips": 0,
+            "relaxed": 12,
+            "rejected": 8,
+            "rejected_topology": 8,
+            "rejected_geometry": 0,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 0.08,
+            "stop": "iteration_limit"
+          },
+          "protected_edges": 20,
+          "protected_vertices": 19,
+          "max_protected_vertex_drift": 0.0,
+          "sampled_corner_uv_max_error": 4.440892098500626e-16,
+          "attribute_errors": {
+            "position_probe_max": 1.1102230246251565e-16
+          },
+          "input_charts": 2,
+          "topology_preserved": true,
+          "distance": {
+            "samples_each_direction": [
+              57,
+              57
+            ],
+            "max": 2.2473876566261383e-16,
+            "rms": 6.820137111277316e-17,
+            "max_over_diagonal": 1.5850288681554406e-16,
+            "method": "deterministic vertices and face centroids, two directions; not a Hausdorff bound"
+          },
+          "output_sha256": "03c4afa6336892d5f8b4a2dbe84851517107f2cd2ac8def43d56377e8c000e76"
+        }
+      ],
+      "rejected_jobs": [
+        "target_edge_length",
+        "iterations",
+        "max_operations",
+        "relaxation",
+        "minimum_angle",
+        "max_deviation",
+        "unknown-operation-field",
+        "unknown-root-field",
+        "unsupported-qem",
+        "sharp-angle",
+        "negative-material",
+        "missing-corner",
+        "missing-face-uv",
+        "invalid-feature",
+        "duplicate-channel",
+        "short-channel",
+        "wrong-width",
+        "empty-channel-name",
+        "zero-normal",
+        "unit-width",
+        "late-rejection"
+      ],
+      "repeatability": "identical folded input output SHA-256 matched"
+    },
+    "scale-js.json": {
+      "executed_at": "2026-11-16T10:13:20.308178+00:00",
+      "source_commit": "cb348daa36265c7fcbe3481f534d47178602e455",
+      "source_tree": "877f1de555afd269ce830889471053eba6b4b8fd",
+      "source_dirty": false,
+      "module": "ShiChengxu/moonsurface",
+      "version": "0.2.0",
+      "target": "js",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.9",
+      "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+      "node": "v24.22.1",
+      "commands": [
+        [
+          "python",
+          "tools/benchmark.py",
+          "--sizes",
+          "32",
+          "64",
+          "128",
+          "--repeats",
+          "3"
+        ]
+      ],
+      "status": "passed",
+      "cases": [
+        {
+          "size": 32,
+          "input_sha256": "6ea7ed9852761f01cbadeb287c4b3db6a8722c48939f31eee1bf1e41c8e4f5ee",
+          "output_sha256": "b2ac47815bbab550e33fbeb15243099bdcd23f15f280a707df1662eecc6209de",
+          "input_bytes": 349589,
+          "before": {
+            "vertices": 1089,
+            "edges": 3136,
+            "faces": 2048,
+            "boundary_edges": 128,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 39.87894574564817,
+            "mean_min_angle_degrees": 42.87751386375752,
+            "mean_triangle_quality": 0.8625084453484364,
+            "edge_min": 0.02814504109017435,
+            "edge_max": 0.048114715617664214,
+            "edge_mean": 0.035491350633173664,
+            "edge_cv": 0.180586271071684
+          },
+          "after": {
+            "vertices": 1224,
+            "edges": 3541,
+            "faces": 2318,
+            "boundary_edges": 128,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 19.98151826494839,
+            "mean_min_angle_degrees": 43.72906872962538,
+            "mean_triangle_quality": 0.8791469910698236,
+            "edge_min": 0.01364582367604725,
+            "edge_max": 0.05003009416395461,
+            "edge_mean": 0.03306808796755934,
+            "edge_cv": 0.20131741041548434
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 3659,
+            "splits": 179,
+            "collapses": 44,
+            "flips": 297,
+            "relaxed": 2195,
+            "rejected": 944,
+            "rejected_topology": 929,
+            "rejected_geometry": 15,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 0.00875,
+            "stop": "iteration_limit"
+          },
+          "protected_edges": 128,
+          "protected_vertices": 128,
+          "max_protected_vertex_drift": 2.7755575615628914e-17,
+          "sampled_corner_uv_max_error": 3.3306690738754696e-16,
+          "attribute_errors": {
+            "position_probe_max": 2.220446049250313e-16
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "measurements": [
+            {
+              "seconds_host_included": 0.4761115999426693,
+              "sampled_peak_process_bytes": 164634624,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 0.477352499961853,
+              "sampled_peak_process_bytes": 165027840,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 0.47104610002133995,
+              "sampled_peak_process_bytes": 164737024,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            }
+          ],
+          "median_seconds": 0.4761115999426693,
+          "maximum_sampled_peak_bytes": 165027840
+        },
+        {
+          "size": 64,
+          "input_sha256": "a6fa2eb6268c3bce02d406f04528406e6afb8b98004b6eb4547ad1b7e3eb99be",
+          "output_sha256": "e39926d62cb4650a9cbe7e11b708164dd57c3924401b8db2b62d2005d365285d",
+          "input_bytes": 1465754,
+          "before": {
+            "vertices": 4225,
+            "edges": 12416,
+            "faces": 8192,
+            "boundary_edges": 256,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 39.82398795451043,
+            "mean_min_angle_degrees": 42.871967400807975,
+            "mean_triangle_quality": 0.8624901119785653,
+            "edge_min": 0.014065008760881792,
+            "edge_max": 0.024079432269770423,
+            "edge_mean": 0.01776757676221085,
+            "edge_cv": 0.18084014811875285
+          },
+          "after": {
+            "vertices": 4800,
+            "edges": 14141,
+            "faces": 9342,
+            "boundary_edges": 256,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 16.652434289103304,
+            "mean_min_angle_degrees": 43.61651609553892,
+            "mean_triangle_quality": 0.8723556921052305,
+            "edge_min": 0.005775911646759468,
+            "edge_max": 0.023279466851741742,
+            "edge_mean": 0.016512338469453276,
+            "edge_cv": 0.20941794392834198
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 10000,
+            "splits": 639,
+            "collapses": 64,
+            "flips": 837,
+            "relaxed": 4526,
+            "rejected": 3934,
+            "rejected_topology": 3910,
+            "rejected_geometry": 24,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 0.004375,
+            "stop": "operation_budget"
+          },
+          "protected_edges": 256,
+          "protected_vertices": 256,
+          "max_protected_vertex_drift": 2.7755575615628914e-17,
+          "sampled_corner_uv_max_error": 2.220446049250313e-16,
+          "attribute_errors": {
+            "position_probe_max": 2.220446049250313e-16
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "measurements": [
+            {
+              "seconds_host_included": 1.0777856999775395,
+              "sampled_peak_process_bytes": 303566848,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 1.1067582999821752,
+              "sampled_peak_process_bytes": 304123904,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 1.2812167999800295,
+              "sampled_peak_process_bytes": 302223360,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            }
+          ],
+          "median_seconds": 1.1067582999821752,
+          "maximum_sampled_peak_bytes": 304123904
+        },
+        {
+          "size": 128,
+          "input_sha256": "c85ff6acf8372c4ad95636818b258d710f392e87c78f809dcb856d9203b5bc67",
+          "output_sha256": "cba5825a6b59d806bff126df26a55e2c0fbc86d9c7ab28be7153d8e1a163379e",
+          "input_bytes": 6021338,
+          "before": {
+            "vertices": 16641,
+            "edges": 49408,
+            "faces": 32768,
+            "boundary_edges": 512,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 39.81017988930095,
+            "mean_min_angle_degrees": 42.87084561539643,
+            "mean_triangle_quality": 0.8624855112372729,
+            "edge_min": 0.007031563708476796,
+            "edge_max": 0.012042492284304632,
+            "edge_mean": 0.008889343993501829,
+            "edge_cv": 0.18095279438296843
+          },
+          "after": {
+            "vertices": 18889,
+            "edges": 56152,
+            "faces": 37264,
+            "boundary_edges": 512,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 39.81017988930095,
+            "mean_min_angle_degrees": 43.223174118468485,
+            "mean_triangle_quality": 0.8629125154723595,
+            "edge_min": 0.005833728567250435,
+            "edge_max": 0.011666122405839007,
+            "edge_mean": 0.00829597222598414,
+            "edge_cv": 0.20820383030959586
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 1,
+            "attempts": 10000,
+            "splits": 2248,
+            "collapses": 0,
+            "flips": 0,
+            "relaxed": 0,
+            "rejected": 7752,
+            "rejected_topology": 7752,
+            "rejected_geometry": 0,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 0.0021875,
+            "stop": "operation_budget"
+          },
+          "protected_edges": 512,
+          "protected_vertices": 512,
+          "max_protected_vertex_drift": 2.7755575615628914e-17,
+          "sampled_corner_uv_max_error": 1.1102230246251565e-16,
+          "attribute_errors": {
+            "position_probe_max": 2.220446049250313e-16
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "measurements": [
+            {
+              "seconds_host_included": 2.0405184000264853,
+              "sampled_peak_process_bytes": 672460800,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 2.011382299941033,
+              "sampled_peak_process_bytes": 669347840,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 1.9017920999322087,
+              "sampled_peak_process_bytes": 670322688,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            }
+          ],
+          "median_seconds": 2.011382299941033,
+          "maximum_sampled_peak_bytes": 672460800
+        }
+      ],
+      "hardware": {
+        "machine": "AMD64",
+        "cpu_count": 32
+      },
+      "measurement": "fresh Node processes; includes file IO, parsing, core work and serialization; 20 ms OS peak-counter observations are lower bounds, not algorithm-only RSS"
+    },
+    "scale-js-200000.json": {
+      "executed_at": "2026-11-16T10:16:39.250205+00:00",
+      "source_commit": "7537cfa37bfeac68396eb57dca773db1e06ef967",
+      "source_tree": "83e6e7e431b137eb4982eda4d6ffc57e9767f33f",
+      "source_dirty": false,
+      "module": "ShiChengxu/moonsurface",
+      "version": "0.2.0",
+      "target": "js",
+      "platform": "Windows-11-10.0.26200-SP0",
+      "python": "3.13.9",
+      "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+      "node": "v24.22.1",
+      "commands": [
+        [
+          "python",
+          "tools/benchmark.py",
+          "--sizes",
+          "128",
+          "--repeats",
+          "3",
+          "--max-operations",
+          "200000"
+        ]
+      ],
+      "status": "passed",
+      "cases": [
+        {
+          "size": 128,
+          "input_sha256": "b72ac09692bf06c8a1afe7a1717413ff72a6f9ac7e24036f4dfb3cf2d6b4b6ff",
+          "output_sha256": "a14558e69a882cef7e0b08dae4ade80709632ab69a678562822d591852f4217d",
+          "input_bytes": 6021339,
+          "before": {
+            "vertices": 16641,
+            "edges": 49408,
+            "faces": 32768,
+            "boundary_edges": 512,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 39.81017988930095,
+            "mean_min_angle_degrees": 42.87084561539643,
+            "mean_triangle_quality": 0.8624855112372729,
+            "edge_min": 0.007031563708476796,
+            "edge_max": 0.012042492284304632,
+            "edge_mean": 0.008889343993501829,
+            "edge_cv": 0.18095279438296843
+          },
+          "after": {
+            "vertices": 18869,
+            "edges": 56092,
+            "faces": 37224,
+            "boundary_edges": 512,
+            "boundary_loops": 1,
+            "components": 1,
+            "euler": 1,
+            "min_angle_degrees": 15.273781896670508,
+            "mean_min_angle_degrees": 44.197869981833726,
+            "mean_triangle_quality": 0.8803473935194652,
+            "edge_min": 0.0037304197414876083,
+            "edge_max": 0.013837960740397944,
+            "edge_mean": 0.00825275907431042,
+            "edge_cv": 0.2078389416640117
+          },
+          "operations": {
+            "kind": "remesh",
+            "iterations": 2,
+            "attempts": 61961,
+            "splits": 2404,
+            "collapses": 176,
+            "flips": 4625,
+            "relaxed": 36728,
+            "rejected": 18028,
+            "rejected_topology": 17959,
+            "rejected_geometry": 69,
+            "rejected_attributes": 0,
+            "rejected_budget": 0,
+            "minimum_angle": 10,
+            "max_deviation": 0.0021875,
+            "stop": "iteration_limit"
+          },
+          "protected_edges": 512,
+          "protected_vertices": 512,
+          "max_protected_vertex_drift": 2.7755575615628914e-17,
+          "sampled_corner_uv_max_error": 2.220446049250313e-16,
+          "attribute_errors": {
+            "position_probe_max": 2.220446049250313e-16
+          },
+          "input_charts": 1,
+          "topology_preserved": true,
+          "measurements": [
+            {
+              "seconds_host_included": 5.1766551999608055,
+              "sampled_peak_process_bytes": 800874496,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 5.157805199967697,
+              "sampled_peak_process_bytes": 771104768,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            },
+            {
+              "seconds_host_included": 5.211672500008717,
+              "sampled_peak_process_bytes": 770846720,
+              "memory_method": "Windows PeakWorkingSetSize, sampled"
+            }
+          ],
+          "median_seconds": 5.1766551999608055,
+          "maximum_sampled_peak_bytes": 800874496
+        }
+      ],
+      "hardware": {
+        "machine": "AMD64",
+        "cpu_count": 32
+      },
+      "measurement": "fresh Node processes; includes file IO, parsing, core work and serialization; 20 ms OS peak-counter observations are lower bounds, not algorithm-only RSS"
+    }
+  },
+  "hardware_note": "Local Windows machine: Intel Core i9-14900HX, 24 cores / 32 logical processors; 16890322944 bytes RAM",
+  "caveat": "Observed process peak is a sampled lower bound including Node; quality/target attainment is not guaranteed."
+}
