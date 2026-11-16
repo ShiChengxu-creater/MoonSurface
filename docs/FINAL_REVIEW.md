@@ -2,7 +2,7 @@
 
 Prepared 2026-11-16. The revised core scope is attributed model editing, conservative
 feature preservation, isotropic remeshing and the original geometry Loop workflow.
-QEM is not part of this candidate. Skinning/morphs/multiple UVs, complete glTF
+QEM is not part of this release. Skinning/morphs/multiple UVs, complete glTF
 round-trip and global self-intersection guarantees are unsupported. The formal
 proposal and organizer correspondence are maintained by the participant outside
 the public product repository.
@@ -24,7 +24,7 @@ the public product repository.
 | Published version | [REGISTRY_RELEASE](REGISTRY_RELEASE.md): 0.2 alpha registry download, source/hash and three-target proof |
 | License and provenance | Apache-2.0 core; CC0 assets; separately licensed optional GPL reference driver; THIRD_PARTY/AI_USAGE |
 
-Local candidate measurements and exact source revisions are summarized in
+Local pre-publication measurements and exact source revisions are summarized in
 [final-review.json](evidence/final-review.json); the scale table and visible quality
 limits are in [SCALE.md](SCALE.md). A later documentation commit does not change the
 recorded measurement revisions.
@@ -62,11 +62,12 @@ full convergence. CPU, OS, compiler, parameters and hashes accompany the report.
 
 ## Publication and final submission status
 
-`0.2.0` is currently a source candidate. Generate `moon package`, verify the actual
-archive, review the corresponding GitHub CI run, then publish that exact version.
-After publication, run `registry_consumer.py` with its version, source commit and
-expected archive hash. Local workspace tests are not registry installation proof.
-Do not re-upload a changed archive under an existing published version.
+Stable `0.2.0` is published from `b993b41`. Its four exact-head CI jobs passed before
+publication; a fresh three-target registry consumer subsequently passed 5 tests per
+target and the README example. Source/archive hashes and commands are in
+[REGISTRY_RELEASE.md](REGISTRY_RELEASE.md). Local workspace tests are separate
+from that registry evidence. Later documentation commits do not replace the
+published source revision. Do not re-upload a changed archive under `0.2.0`.
 
 The participant must check the final delivery links and submit through the official
 channel. Repository/test completion, package publication and organizer acceptance

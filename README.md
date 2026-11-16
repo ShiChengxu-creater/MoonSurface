@@ -6,10 +6,9 @@
 输出可交给渲染器、模型工具或资产管线的几何、UV、材质和法线数据。
 核心支持 native、JS、wasm-gc，不依赖 C++/Python 几何库或渲染引擎。
 
-**当前源码为终验候选 `0.2.0`，尚未发布。** 可安装的
-[`0.2.0-alpha.1`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.2.0-alpha.1)
-已包含下表的 Model/重网格 API，三后端真实注册表消费者已验证。
-`0.2.0` 保持这些产品接口，增加连续编辑、异常任务、规模测量和交付验证。
+**稳定版 [`0.2.0`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.2.0) 已发布，**
+三后端真实注册表消费者均已验证。发布源码为 `b993b41`，后续提交仅补充发布记录。
+本版保持 0.2 alpha 的产品接口，增加连续编辑、异常任务、规模测量和交付验证。
 QEM 尚未实现。发布事实见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
 
 ## 模型处理能力
@@ -33,12 +32,12 @@ QEM 尚未实现。发布事实见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.m
 在已有 MoonBit 项目中安装已发布版：
 
 ```sh
-moon add ShiChengxu/moonsurface@0.2.0-alpha.1
+moon add ShiChengxu/moonsurface@0.2.0
 ```
 
 公开包提供 `ShiChengxu/moonsurface` 及 `ShiChengxu/moonsurface/exchange`。
 完整 Model 调用见 [feature_remesh](examples/feature_remesh/main.mbt)，约束与错误见
-[MODEL_CONTRACT.md](docs/MODEL_CONTRACT.md)。终验候选的源码例子按下列命令运行。
+[MODEL_CONTRACT.md](docs/MODEL_CONTRACT.md)。源码例子按下列命令运行。
 
 固定编译器 `moonc 0.10.14+7d59c7ec9`，moon/moonrun `0.1.20260920`。
 Node.js 22+ 运行文件宿主；Python 3.12+、NumPy 2.2.6 仅用于独立验证。
@@ -70,7 +69,7 @@ MoonBit 完成。协议见 [JOB_FORMAT.md](docs/JOB_FORMAT.md)。
 
 ## 独立模块接入
 
-以下 workspace 用于候选源码或实际 ZIP 的本地开发。使用注册表依赖时无需创建
+以下 workspace 用于源码或实际 ZIP 的本地开发。使用注册表依赖时无需创建
 `moon.work`，采用上述已发布版本；`0.1.0-alpha.1` 只有旧几何接口。
 
 ```text
@@ -143,7 +142,7 @@ python tools/verify.py --target native
 覆盖格式/接口漂移、显式 check/build/test、三个示例、Loop 独立参考、源码/实际 ZIP 消费者、
 六个固定种子模型任务及四类损坏结果负控。JS 另跑真实模型与 13 项文件 CLI 检查。
 当前 MoonBit 测试 46 项/后端，包括四组种子共 480 次连续编辑、失败快照保持、
-反复重网格/压缩重导入及资源失败。候选源码/ZIP 消费者各 5 项；数量不代表覆盖率。
+反复重网格/压缩重导入及资源失败。源码/ZIP/注册表消费者各 5 项；数量不代表覆盖率。
 JS 文件宿主另验证 4 个变换/折面任务、21 类非法任务和重复输出一致性。
 
 外部对照另外运行，需要可选依赖：

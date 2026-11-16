@@ -1,7 +1,6 @@
 {
   "recorded_at": "2026-11-16T10:18:31.125073+00:00",
   "version": "0.2.0",
-  "publication": "source candidate; not yet published",
   "core_tests_per_target": 46,
   "verification": {
     "native": {
@@ -732,5 +731,30 @@
     }
   },
   "hardware_note": "Local Windows machine: Intel Core i9-14900HX, 24 cores / 32 logical processors; 16890322944 bytes RAM",
-  "caveat": "Observed process peak is a sampled lower bound including Node; quality/target attainment is not guaranteed."
+  "caveat": "Observed process peak is a sampled lower bound including Node; quality/target attainment is not guaranteed.",
+  "publication_at_measurement": "source candidate; not yet published",
+  "published_release": {
+    "version": "0.2.0",
+    "source_commit": "b993b4129f5967440864b656ac7fb8b79dae880a",
+    "archive_sha256": "677954d198a6c2556843e2395fbda9c5286fb81629b2ed70d7ced3d264c96cf2",
+    "registry_verification": "registry-0.2.0.json",
+    "targets": [
+      {
+        "target": "js",
+        "tests": 5,
+        "passed": 5
+      },
+      {
+        "target": "wasm-gc",
+        "tests": 5,
+        "passed": 5
+      },
+      {
+        "target": "native",
+        "tests": 5,
+        "passed": 5
+      }
+    ],
+    "status": "published and verified without local overrides"
+  }
 }

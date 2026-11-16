@@ -1,6 +1,6 @@
 # Changes
 
-## 0.2.0 — final-review source candidate, unpublished
+## 0.2.0 — published 2026-11-16
 
 - Preserve the 0.2 alpha product API; freeze the attributed/feature remeshing scope.
 - Add 480 seeded edit attempts with topology, UV, analytic field and failure rollback checks.

@@ -1,6 +1,6 @@
 # Model attribute and feature contract — 0.2
 
-Implemented in published `0.2.0-alpha.1` and retained by the `0.2.0` source candidate.
+Implemented in `0.2.0-alpha.1` and retained by published stable `0.2.0`.
 
 `Model` is the deletion-capable, attribute-aware model layer. `Mesh` retains its
 geometry-only halfedge split/flip/Loop contract. Accessing `.mesh` from a snapshot

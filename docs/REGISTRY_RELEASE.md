@@ -1,5 +1,29 @@
 # Registry releases
 
+## 0.2.0 — stable, published 2026-11-16
+
+The explicitly approved archive was published after all four jobs of
+[CI 43848088670](https://github.com/ShiChengxu-creater/MoonSurface/actions/runs/43848088670)
+passed on the exact release commit. The server returned `200 OK`. Registry metadata
+and a fresh independent download matched the same archive checksum.
+
+- Published source: `b993b4129f5967440864b656ac7fb8b79dae880a`.
+- Archive SHA-256: `677954d198a6c2556843e2395fbda9c5286fb81629b2ed70d7ced3d264c96cf2`.
+- Registry created at: `2026-11-16T10:25:08.196233+00:00`.
+- Fresh JS, wasm-gc and Windows native/MSVC consumers: 5/5 tests per target.
+- All 23 non-test MoonBit source files matched the release revision after LF normalization.
+- Dependency source was registry, not a workspace member; no local path override.
+- README registry example compiled and returned 16 faces.
+- Portable report: [registry-0.2.0.json](evidence/registry-0.2.0.json).
+
+```sh
+python tools/registry_consumer.py --version 0.2.0 --source-ref b993b41 --expected-sha256 677954d198a6c2556843e2395fbda9c5286fb81629b2ed70d7ced3d264c96cf2 --readme
+```
+
+Documentation and evidence updates after publication do not change the immutable
+release archive. `moon package` on a later documentation checkout may contain
+different documentation bytes; that is not a replacement registry release.
+
 ## 0.2.0-alpha.1 — published 2026-11-11
 
 The participant published `ShiChengxu/moonsurface@0.2.0-alpha.1`. Its archive includes
@@ -18,8 +42,7 @@ the new model remesher. The README app also compiled from the registry and retur
 python tools/registry_consumer.py --version 0.2.0-alpha.1 --source-ref 2cfbeb6 --expected-sha256 9de021c074a3bf8ac4dcb0fd6e9b5cc3163b9406c6a40fe2a7dffde5c322c855 --readme
 ```
 
-This is distinct from the current `0.2.0` final-review source candidate, which has
-not yet been published. Later docs/tests commits cannot change an immutable
+This alpha is distinct from stable `0.2.0` above. Later docs/tests commits cannot change an immutable
 published archive; a new publication must use its own version and be verified again.
 
 ## 0.1.0-alpha.1 — historical initial release

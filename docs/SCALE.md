@@ -1,6 +1,6 @@
-# Bounded scale measurements — 0.2.0 candidate
+# Bounded scale measurements — 0.2.0
 
-Measured 2026-11-16 on Windows 11, Intel Core i9-14900HX (24 cores / 32 logical
+Measured before publication on 2026-11-16: Windows 11, Intel Core i9-14900HX (24 cores / 32 logical
 processors), 16,890,322,944 bytes physical RAM, Node 24.22.1, Python 3.13.9 and the
 pinned MoonBit compiler. Results are in [final-review.json](evidence/final-review.json),
 including every repeated run, source commit, input/output hashes, parameters and
