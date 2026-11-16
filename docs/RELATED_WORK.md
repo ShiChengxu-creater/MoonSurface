@@ -16,8 +16,9 @@ Novelty is partial overlap with no identified full match for the proposed combin
 scope, with medium search confidence. This is not proof that nobody has built it.
 If the only goal were fixing Loop weights in an existing package, contributing
 there would be reasonable. This project's larger planned scope also includes a
-mutable topology/editing contract, collapse/compaction and constrained QEM; the
-last two are explicitly unfinished at this initial milestone.
+mutable topology/editing contract and collapse/compaction. Since the initial
+milestone, 0.2 implements the latter together with attributed/feature-aware
+isotropic remeshing. QEM remains unimplemented and is outside the revised core scope.
 
 No source code from these projects is incorporated. Algorithm references and
 development-tool provenance are in `THIRD_PARTY.md`. The research did not establish

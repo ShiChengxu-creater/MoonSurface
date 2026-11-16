@@ -1,0 +1,138 @@
+{
+  "status": "passed",
+  "executed_at": "2026-11-11T14:14:53.467428+00:00",
+  "module": "ShiChengxu/moonsurface",
+  "version": "0.2.0-alpha.1",
+  "resolution": "Mooncakes registry; no moon.work or local path replacement",
+  "compared_source_commit": "2cfbeb6964eb941df105dd95dda3d4376c2d53b7",
+  "production_files": [
+    {
+      "file": "attributes.mbt",
+      "sha256_lf": "b830c39474ee64ac69a428f8188a3bc199f8e82c45581130f6bbc72f5ade93de"
+    },
+    {
+      "file": "cmd/moonsurface/main.mbt",
+      "sha256_lf": "a0cca79efe8d80d734e72a4257adf9cf0e5505d3e88f38f6c4b17fe371fea425"
+    },
+    {
+      "file": "examples/feature_remesh/main.mbt",
+      "sha256_lf": "db08f09d48f5c50f76bc6eda1b06f645c91b7a16bd01056168e4cf38a920d088"
+    },
+    {
+      "file": "examples/local_edit/main.mbt",
+      "sha256_lf": "683b250d927f16ac4493e48c13d1060ef0f66da7f2ec91b1bd02bdc490122ef2"
+    },
+    {
+      "file": "examples/loop_refine/main.mbt",
+      "sha256_lf": "1b5dfef07c8e8abeb6e2ff0e44ed48f94079d9a347094c5810955d1eccade2d5"
+    },
+    {
+      "file": "exchange/job.mbt",
+      "sha256_lf": "196bb5abb04b64ec41d22d11d6c43f856155378e0dc3eebeb35294c937d4019d"
+    },
+    {
+      "file": "exchange/model_job.mbt",
+      "sha256_lf": "ddd87d358d5155856492fe5537e11075b145972663f404a68d05d8317a06060c"
+    },
+    {
+      "file": "flip.mbt",
+      "sha256_lf": "9ef1633664cf0561fd44ddfa70da8994f3c6a2a9ac7a731f1586b4b03a3317d6"
+    },
+    {
+      "file": "indexed.mbt",
+      "sha256_lf": "158eaa951a8c2b461a2c67abccd00f42b435e115ce090c813aa7e59ec3eb5c14"
+    },
+    {
+      "file": "inspect.mbt",
+      "sha256_lf": "75baa273d76e15d5f363d96dd57da2faaa54df09ac01c2725f640edadf01375a"
+    },
+    {
+      "file": "loop.mbt",
+      "sha256_lf": "3454ba365fc48ebad9cb110af1d3f1ffea810667c6ac16588a0a239a209ede9f"
+    },
+    {
+      "file": "model.mbt",
+      "sha256_lf": "18f58f47a8a09eeb23bfb2a1a3b86972e241827766dd1665c460dfe867fb9d6c"
+    },
+    {
+      "file": "model_edits.mbt",
+      "sha256_lf": "ce4ba3bf05f224564f523e9d4582096ffde6fb3ef08ccd5de07e9a4e2bad84fa"
+    },
+    {
+      "file": "model_graph.mbt",
+      "sha256_lf": "1ca17a381df4eca5ac94bb99c457ae61f8ffcdae74e2ea9eec5508d8f337d82c"
+    },
+    {
+      "file": "model_normals.mbt",
+      "sha256_lf": "7f1b56e80f5cc37fcfe1135b8da7dd8b7838fae692ad122c0e54477b300db4c5"
+    },
+    {
+      "file": "normals.mbt",
+      "sha256_lf": "6b48ee18596b318a04197aabc8c66b995d45b81791f39e9a6ac9a0c595d270a0"
+    },
+    {
+      "file": "projection.mbt",
+      "sha256_lf": "ba36b28b7ebf9f3980d9d4a1758dfbd7d149ddb71818be41c98d0c234d6295db"
+    },
+    {
+      "file": "quality.mbt",
+      "sha256_lf": "7af864ae94d59f13a84704fe0edd68d1118da9b404645d677f5bbcef4ba5638c"
+    },
+    {
+      "file": "refine.mbt",
+      "sha256_lf": "88970655fdc76fabd3dc3e199f02e75934d463da6f244ba173330a5314679c01"
+    },
+    {
+      "file": "remesh.mbt",
+      "sha256_lf": "c48c400e1bf82b68e360c6e5620a63ada13e273d2db7e119b26f3297589f1410"
+    },
+    {
+      "file": "split.mbt",
+      "sha256_lf": "bee322ce64cbec4b8c61ebd7235d4907d912a4e7ccc052833a0a4deb2d6a6805"
+    },
+    {
+      "file": "topology.mbt",
+      "sha256_lf": "5b0e1a6a8bcd359e2cd1f3a6329c46e3133b19f0fb0a8b5a8d2d46cf95ecd2a9"
+    },
+    {
+      "file": "types.mbt",
+      "sha256_lf": "b466c512021b38469f7fd35f676d0b622c4e4b8a0c62a301d0d5b664eb632a22"
+    }
+  ],
+  "registry_archive_sha256": "9de021c074a3bf8ac4dcb0fd6e9b5cc3163b9406c6a40fe2a7dffde5c322c855",
+  "readme": {
+    "target": "js",
+    "output": "16",
+    "dependency_source": "registry"
+  },
+  "targets": [
+    {
+      "target": "js",
+      "tests": 5,
+      "passed": 5
+    },
+    {
+      "target": "wasm-gc",
+      "tests": 5,
+      "passed": 5
+    },
+    {
+      "target": "native",
+      "tests": 5,
+      "passed": 5
+    }
+  ],
+  "platform": "Windows-11-10.0.26200-SP0",
+  "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+  "registry_created_at_utc": "2026-11-11T14:07:20.986924+00:00",
+  "registry_status": "success",
+  "registry_deprecated": false,
+  "dependency": {
+    "name": "ShiChengxu/moonsurface",
+    "version": "0.2.0-alpha.1",
+    "workspace_member": false,
+    "source": {
+      "kind": "registry"
+    }
+  }
+}

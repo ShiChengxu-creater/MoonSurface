@@ -1,6 +1,6 @@
 # Geometry job protocol
 
-The original `moonsurface/1` format below is unchanged. The candidate also accepts
+The original `moonsurface/1` format below is unchanged. Version 0.2 also accepts
 `moonsurface-model/1`: positions/triangles with optional attributes, corner_uvs
 (F×3×2), materials, feature_edges and sharp_angle. Attributes declare name, width,
 interpolation (`linear`, `unit`, `discrete`) and V rows of values.
@@ -46,7 +46,8 @@ Operations, in order:
 
 `fraction` is optional (default .5); `levels` is required. Limits accept only
 `max_vertices`, `max_input_faces`, `max_output_faces`, `max_levels`; defaults and
-ceilings are in `NUMERICS.md`. There is no collapse or QEM job operation yet.
+ceilings are in `NUMERICS.md`. This geometry-only format has no collapse or QEM;
+collapse is available in `moonsurface-model/1`, and QEM is not implemented.
 
 Success includes `ok:true`, `format:"moonsurface-result/1"`, complete `positions`,
 `triangles`, `stats`, and one small report per operation. Loop reports include

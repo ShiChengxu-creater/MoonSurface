@@ -6,10 +6,11 @@
 输出可交给渲染器、模型工具或资产管线的几何、UV、材质和法线数据。
 核心支持 native、JS、wasm-gc，不依赖 C++/Python 几何库或渲染引擎。
 
-**当前源码候选 `0.2.0-alpha.1`，尚未发布。** 已发布的
-[`0.1.0-alpha.1`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.1.0-alpha.1)
-仅有原 Mesh/Loop 能力；新 Model API 使用当前源码或候选 ZIP。
-QEM 仍未实现，重网格化的短边折叠不等于 QEM。工程结果不代替主办方审核。
+**当前源码为终验候选 `0.2.0`，尚未发布。** 可安装的
+[`0.2.0-alpha.1`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.2.0-alpha.1)
+已包含下表的 Model/重网格 API，三后端真实注册表消费者已验证。
+`0.2.0` 保持这些产品接口，增加连续编辑、异常任务、规模测量和交付验证。
+QEM 尚未实现。发布事实见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
 
 ## 模型处理能力
 
@@ -27,7 +28,17 @@ QEM 仍未实现，重网格化的短边折叠不等于 QEM。工程结果不代
 [REAL_MODELS.md](docs/REAL_MODELS.md)。骨骼权重、形变目标、多套 UV、完整 glTF 往返与
 全局自交检查不在当前范围。Loop 是几何接口，未宣称传递 Model 属性。
 
-## 获取与运行
+## 安装与运行
+
+在已有 MoonBit 项目中安装已发布版：
+
+```sh
+moon add ShiChengxu/moonsurface@0.2.0-alpha.1
+```
+
+公开包提供 `ShiChengxu/moonsurface` 及 `ShiChengxu/moonsurface/exchange`。
+完整 Model 调用见 [feature_remesh](examples/feature_remesh/main.mbt)，约束与错误见
+[MODEL_CONTRACT.md](docs/MODEL_CONTRACT.md)。终验候选的源码例子按下列命令运行。
 
 固定编译器 `moonc 0.10.14+7d59c7ec9`，moon/moonrun `0.1.20260920`。
 Node.js 22+ 运行文件宿主；Python 3.12+、NumPy 2.2.6 仅用于独立验证。
@@ -59,7 +70,8 @@ MoonBit 完成。协议见 [JOB_FORMAT.md](docs/JOB_FORMAT.md)。
 
 ## 独立模块接入
 
-候选源码或实际 ZIP 作为本地 workspace 成员。不要把旧注册表版本当作已有新 Model API。
+以下 workspace 用于候选源码或实际 ZIP 的本地开发。使用注册表依赖时无需创建
+`moon.work`，采用上述已发布版本；`0.1.0-alpha.1` 只有旧几何接口。
 
 ```text
 workspace/
@@ -82,7 +94,7 @@ members = [ "./MoonSurface", "./app" ]
 ```toml
 name = "local/surface_demo"
 version = "0.0.0"
-import { "ShiChengxu/moonsurface@0.2.0-alpha.1" }
+import { "ShiChengxu/moonsurface@0.2.0" }
 ```
 
 `app/moon.pkg`：
@@ -130,7 +142,9 @@ python tools/verify.py --target native
 
 覆盖格式/接口漂移、显式 check/build/test、三个示例、Loop 独立参考、源码/实际 ZIP 消费者、
 六个固定种子模型任务及四类损坏结果负控。JS 另跑真实模型与 13 项文件 CLI 检查。
-当前 MoonBit 测试 40 项/后端，候选源码/ZIP 消费者各 5 项；数量不代表覆盖率。
+当前 MoonBit 测试 46 项/后端，包括四组种子共 480 次连续编辑、失败快照保持、
+反复重网格/压缩重导入及资源失败。候选源码/ZIP 消费者各 5 项；数量不代表覆盖率。
+JS 文件宿主另验证 4 个变换/折面任务、21 类非法任务和重复输出一致性。
 
 外部对照另外运行，需要可选依赖：
 
@@ -145,7 +159,18 @@ python tools/model_verify.py --target js --real --reference
 
 CI 包含 Linux native/JS/wasm-gc 和 Windows native；Windows 另执行固定 MeshLab 对照。
 对应提交状态见 [Actions](https://github.com/ShiChengxu-creater/MoonSurface/actions)。
-旧发布的安装记录保留于 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)，新候选尚未发布。
+发布版本与确切提交记录见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
+终验范围及逐项重现入口见 [FINAL_REVIEW.md](docs/FINAL_REVIEW.md)。
+
+可选分档测量（不设机器速度门槛）：
+
+```sh
+python tools/benchmark.py --sizes 32 64 128 --repeats 3
+```
+
+测量包含 Node 启动、文件输入、核心计算及输出序列化；进程内存为每 20 ms 观察的系统
+峰值计数，属于观测下界，含宿主开销。较大任务可能因操作预算提前停止。
+不能把计数上限当作可处理任意同规模模型的保证。
 
 ## 许可证与边界
 
