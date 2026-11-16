@@ -1,4 +1,4 @@
-"""Reproduce one target's complete initial-milestone checks on a clean commit."""
+"""Reproduce one target's complete release checks on a clean commit."""
 import argparse
 from datetime import datetime, timezone
 import json
@@ -34,6 +34,7 @@ def main():
     if args.target == 'js':
         run([sys.executable, 'tools/cli_check.py'], target='js')
         run([sys.executable, 'tools/readme_check.py'], target='js')
+        run([sys.executable, 'tools/release_check.py'], target='js')
     run(['moon', 'info'], target=args.target)
     run(['git', 'diff', '--exit-code'])
     report = dict(evidence_base(args.target, [['python', 'tools/verify.py', '--target', args.target]]),
@@ -42,7 +43,7 @@ def main():
                   examples=examples)
     output = ROOT/'artifacts'/f'verification-{args.target}.json'
     output.write_text(json.dumps(report, indent=2)+'\n', encoding='utf-8')
-    print(f'Initial milestone verification passed: {args.target}, {history} commits')
+    print(f'Project verification passed: {args.target}, {history} commits')
 
 
 if __name__ == '__main__':
