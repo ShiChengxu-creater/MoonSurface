@@ -65,7 +65,7 @@ def measure(command,stdout,stderr):
                 sampled_peak_process_bytes=max(peaks,default=0),memory_method=method)
 
 
-def grid(size):
+def grid(size, max_operations=10000):
     # A deterministic uneven planar grid with an analytic field and original UV.
     t=np.linspace(0,1,size+1)
     xs=t+.10*np.sin(2*np.pi*t)/(2*np.pi)
@@ -79,20 +79,22 @@ def grid(size):
     return dict(format='moonsurface-model/1',positions=p,triangles=faces,
         attributes=[dict(name='position_probe',width=3,interpolation='linear',values=p)],
         corner_uvs=[[[p[v][0],p[v][1]] for v in f] for f in faces],
-        operations=[dict(kind='remesh',target_edge_length=1.12/size,iterations=2,max_operations=10000)])
+        operations=[dict(kind='remesh',target_edge_length=1.12/size,iterations=2,max_operations=max_operations)])
 
 
 def main():
     parser=argparse.ArgumentParser()
     parser.add_argument('--sizes',nargs='+',type=int,default=[32,64,128])
     parser.add_argument('--repeats',type=int,default=3)
+    parser.add_argument('--max-operations',type=int,default=10000)
     args=parser.parse_args()
     assert all(2<=n<=128 for n in args.sizes) and 1<=args.repeats<=5
+    assert 0<=args.max_operations<=200000
     run(['moon','build','--target','js','--deny-warn'],target='js')
     base=ROOT/'artifacts';base.mkdir(exist_ok=True)
     work=Path(tempfile.mkdtemp(prefix='scale-',dir=base));cases=[]
     for size in args.sizes:
-        job=grid(size)
+        job=grid(size,args.max_operations)
         path=work/f'grid-{size}.json'
         path.write_text(json.dumps(job,separators=(',',':')),encoding='utf-8')
         assert path.stat().st_size<=16*1024*1024
@@ -113,11 +115,12 @@ def main():
               f'{cases[-1]["maximum_sampled_peak_bytes"]/1024**2:.1f} MiB sampled process peak; '
               f'stop={first["operations"][0]["stop"]}',flush=True)
     report=dict(evidence_base('js',[['python','tools/benchmark.py','--sizes',*map(str,args.sizes),
-                                    '--repeats',str(args.repeats)]]),status='passed',cases=cases,
+                                    '--repeats',str(args.repeats),'--max-operations',str(args.max_operations)]]),status='passed',cases=cases,
         workspace=str(work),hardware=dict(machine=__import__('platform').machine(),cpu_count=os.cpu_count()),
         measurement='fresh Node processes; includes file IO, parsing, core work and serialization; '
                     '20 ms OS peak-counter observations are lower bounds, not algorithm-only RSS')
-    (base/'scale-js.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
+    suffix='' if args.max_operations==10000 else '-'+str(args.max_operations)
+    (base/f'scale-js{suffix}.json').write_text(json.dumps(report,indent=2)+'\n',encoding='utf-8')
 
 
 if __name__=='__main__':main()
