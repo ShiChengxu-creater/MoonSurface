@@ -130,30 +130,67 @@ pub fn remesh_isotropic(
     max_deviation < 0.0 {
     raise InvalidArgument("invalid remeshing options")
   }
-  let working = model.copy()
-  let s = working.state
-  let target = target_edge_length / s.scale
+  let source = model.state
+  let target = target_edge_length / source.scale
   if !finite(target) || target < 1.0e-12 {
     raise InvalidArgument("target too small relative to model coordinate scale")
   }
-  for (a, b) in s.edge_list() {
-    if v_length(v_sub(s.points[a], s.points[b])) < 1.0e-12 {
+  for (a, b) in source.edge_list() {
+    if v_length(v_sub(source.points[a], source.points[b])) < 1.0e-12 {
       raise NumericalFailure(
         "input edge below supported normalized remeshing scale",
       )
     }
   }
-  let before = working.quality()
-  s.angle_floor = Double::min(minimum_angle, before.min_angle_degrees)
+  let before = model.quality()
   let deviation = if max_deviation == 0.0 {
     target_edge_length * 0.25
   } else {
     max_deviation
   }
-  s.deviation_limit = deviation / s.scale
-  if !finite(s.deviation_limit) || s.deviation_limit < 1.0e-14 {
+  let deviation_limit = deviation / source.scale
+  if !finite(deviation_limit) || deviation_limit < 1.0e-14 {
     raise InvalidArgument("projection deviation scale")
   }
+  // Keep validation and legacy report semantics, without allocating a working
+  // graph, original-surface witnesses or a BVH for a request that cannot edit.
+  if iterations == 0 || max_operations == 0 || source.nf == 0 {
+    return {
+      output: model.compact(),
+      before,
+      after: before,
+      report: {
+        iterations: if iterations > 0 && max_operations > 0 {
+          1
+        } else {
+          0
+        },
+        attempts: 0,
+        splits: 0,
+        collapses: 0,
+        flips: 0,
+        relaxed: 0,
+        rejected: 0,
+        rejected_topology: 0,
+        rejected_geometry: 0,
+        rejected_attributes: 0,
+        rejected_budget: 0,
+        minimum_angle,
+        max_deviation: deviation,
+        stop: if iterations == 0 {
+          IterationLimit
+        } else if max_operations == 0 {
+          OperationBudget
+        } else {
+          StableUnderConstraints
+        },
+      },
+    }
+  }
+  let working = model.copy()
+  let s = working.state
+  s.angle_floor = Double::min(minimum_angle, before.min_angle_degrees)
+  s.deviation_limit = deviation_limit
   for id, f in s.faces {
     if !f.alive {
       continue

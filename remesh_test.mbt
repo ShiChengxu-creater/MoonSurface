@@ -97,6 +97,48 @@ test "zero attempt budget returns an owned valid unchanged model" {
 }
 
 ///|
+test "no-work remeshing retains report priority and detached attributes" {
+  let model = uneven_grid()
+  let result = @moonsurface.remesh_isotropic(
+    model,
+    0.2,
+    iterations=0,
+    max_operations=0,
+  )
+  assert_eq(result.report.stop, @moonsurface.IterationLimit)
+  assert_eq(result.report.iterations, 0)
+  assert_eq(result.report.attempts, 0)
+  let owned = result.output.attributes[0].values()
+  owned[0][0] = 999.0
+  assert_eq(model.compact().attributes[0].values()[0][0], 0.0)
+  let empty = @moonsurface.Model::new(@moonsurface.Mesh::from_indexed([], []))
+  let idle = @moonsurface.remesh_isotropic(empty, 0.2)
+  assert_eq(idle.report.stop, @moonsurface.StableUnderConstraints)
+  assert_eq(idle.report.iterations, 1)
+}
+
+///|
+test "no-work shortcut still rejects unsupported geometric scales" {
+  let model = uneven_grid()
+  let before = model.compact().mesh.to_indexed()
+  for zero_iterations in [false, true] {
+    try
+      @moonsurface.remesh_isotropic(
+        model,
+        1.0e-30,
+        iterations=if zero_iterations { 0 } else { 1 },
+        max_operations=0,
+      )
+    catch {
+      e => assert_true(e is @moonsurface.InvalidArgument(_))
+    } noraise {
+      _ => fail("zero work bypassed scale validation")
+    }
+  }
+  assert_eq(model.compact().mesh.to_indexed(), before)
+}
+
+///|
 test "storage ceiling is an explicit remesh stop and preserves the input" {
   let mesh = @moonsurface.Mesh::from_indexed(
     [
