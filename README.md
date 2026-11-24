@@ -6,9 +6,9 @@
 输出可交给渲染器、模型工具或资产管线的几何、UV、材质和法线数据。
 核心支持 native、JS、wasm-gc，不依赖 C++/Python 几何库或渲染引擎。
 
-**稳定版 [`0.2.0`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.2.0) 已发布，**
-三后端真实注册表消费者均已验证。发布源码为 `b993b41`，后续提交仅补充发布记录。
-本版保持 0.2 alpha 的产品接口，增加连续编辑、异常任务、规模测量和交付验证。
+**0.2.1 性能更新**：参考表面只保存投影所需的几何/属性，每个约束区域建立独立 BVH；
+零预算、零轮次和空模型跳过无用的重网格准备。公开 API 与 0.2.0 兼容。
+同机对照的五组任务输出与 0.2.0 逐字节一致，具体收益及限制见 [SCALE.md](docs/SCALE.md)。
 QEM 尚未实现。发布事实见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
 
 ## 模型处理能力
@@ -29,10 +29,11 @@ QEM 尚未实现。发布事实见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.m
 
 ## 安装与运行
 
-在已有 MoonBit 项目中安装已发布版：
+在已有 MoonBit 项目中安装对应发布版本（实际发布/安装验证状态见
+[REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)；源码和 ZIP 可按下方 workspace 接入）：
 
 ```sh
-moon add ShiChengxu/moonsurface@0.2.0
+moon add ShiChengxu/moonsurface@0.2.1
 ```
 
 公开包提供 `ShiChengxu/moonsurface` 及 `ShiChengxu/moonsurface/exchange`。
@@ -93,7 +94,7 @@ members = [ "./MoonSurface", "./app" ]
 ```toml
 name = "local/surface_demo"
 version = "0.0.0"
-import { "ShiChengxu/moonsurface@0.2.0" }
+import { "ShiChengxu/moonsurface@0.2.1" }
 ```
 
 `app/moon.pkg`：
@@ -141,7 +142,7 @@ python tools/verify.py --target native
 
 覆盖格式/接口漂移、显式 check/build/test、三个示例、Loop 独立参考、源码/实际 ZIP 消费者、
 六个固定种子模型任务及四类损坏结果负控。JS 另跑真实模型与 13 项文件 CLI 检查。
-当前 MoonBit 测试 46 项/后端，包括四组种子共 480 次连续编辑、失败快照保持、
+当前 MoonBit 测试 50 项/后端，包括四组种子共 480 次连续编辑、失败快照保持、
 反复重网格/压缩重导入及资源失败。源码/ZIP/注册表消费者各 5 项；数量不代表覆盖率。
 JS 文件宿主另验证 4 个变换/折面任务、21 类非法任务和重复输出一致性。
 
@@ -171,6 +172,15 @@ python tools/benchmark.py --sizes 32 64 128 --repeats 3
 峰值计数，属于观测下界，含宿主开销。较大任务可能因操作预算提前停止。
 不能把计数上限当作可处理任意同规模模型的保证。实际分档结果及质量限制见
 [SCALE.md](docs/SCALE.md)。
+
+与固定旧版进行输出一致的同机配对测量：
+
+```sh
+python tools/compare_performance.py --repeats 3
+```
+
+基准代码来自本仓库完整 Git 历史，先构建两个版本，预热后交替运行。CI 仅执行小规模
+一致性检查，不设置速度门槛；测量时含 Node/文件/序列化开销，不宣称任意输入都加速。
 
 ## 许可证与边界
 

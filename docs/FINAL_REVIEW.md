@@ -7,6 +7,12 @@ round-trip and global self-intersection guarantees are unsupported. The formal
 proposal and organizer correspondence are maintained by the participant outside
 the public product repository.
 
+Continued development, 2026-11-24: version 0.2.1 optimizes reference storage,
+patch-local search and no-work requests without changing the public API/policy.
+The 0.2.0 evidence below remains a historical release record; new comparison
+measurements are appended to [SCALE.md](SCALE.md), and registry proof is tracked
+separately for each version.
+
 ## Deliverables and evidence
 
 | Item | Reproduce / inspect |
@@ -15,13 +21,13 @@ the public product repository.
 | Attribute/UV/material editing | `model_stress_test.mbt`, `model_test.mbt`, [MODEL_CONTRACT](MODEL_CONTRACT.md) |
 | Protected chains and remeshing | `remesh_test.mbt`, `examples/feature_remesh` |
 | Three complete examples | `local_edit`, `loop_refine`, `feature_remesh`; exact outputs checked by `tools/verify.py` |
-| Core and external consumers | 46 tests per target; 5 tests each for clean source and actual packaged ZIP |
+| Core and external consumers | 50 tests per target for 0.2.1; 5 tests each for clean source and actual packaged ZIP |
 | Independent measurement | NumPy face-list topology/Gram projection; six seeded jobs, four damaged-result controls |
 | Real asset/reference comparison | [REAL_MODELS](REAL_MODELS.md); original UV/materials, fixed CC0 sources and optional MeshLab |
 | File job boundary coverage | `tools/release_check.py`: four valid transformations/folded jobs, 21 rejections, byte-repeatability |
 | Bounded scale/resource measurements | `tools/benchmark.py`; per-run parameters, hashes, timings, process counters and stop reasons |
 | CI | Linux native/JS/wasm-gc and Windows native; explicit check/build/test; reference and smoke jobs |
-| Published version | [REGISTRY_RELEASE](REGISTRY_RELEASE.md): 0.2 alpha registry download, source/hash and three-target proof |
+| Published versions | [REGISTRY_RELEASE](REGISTRY_RELEASE.md): version-specific registry download, source/hash and three-target proof |
 | License and provenance | Apache-2.0 core; CC0 assets; separately licensed optional GPL reference driver; THIRD_PARTY/AI_USAGE |
 
 Local pre-publication measurements and exact source revisions are summarized in

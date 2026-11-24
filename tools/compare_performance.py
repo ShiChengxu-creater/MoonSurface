@@ -4,7 +4,6 @@ No speed threshold. Every measured output must be byte-identical to the baseline
 and pass the independent checker. Host/process measurements include Node overhead.
 """
 import argparse
-from copy import deepcopy
 from hashlib import sha256
 import json
 from pathlib import Path
@@ -40,6 +39,8 @@ def main():
     work=Path(tempfile.mkdtemp(prefix='perf-compare-',dir=base))
     snapshot=subprocess.run(['git','archive','--format=zip',baseline],cwd=ROOT,check=True,capture_output=True).stdout
     old=work/'baseline';unpack(snapshot,old)
+    for name in ['pkg.generated.mbti','exchange/pkg.generated.mbti']:
+        assert (old/name).read_bytes().replace(b'\r\n',b'\n')==(ROOT/name).read_bytes().replace(b'\r\n',b'\n'),name
     run(['moon','build','--target','js','--deny-warn'],cwd=old,target='js')
     run(['moon','build','--target','js','--deny-warn'],target='js')
     cases=[('avocado',json.loads((ROOT/'fixtures/real/avocado/input.json').read_bytes()))]
@@ -82,7 +83,7 @@ def main():
     report=dict(evidence_base('js',[['python','tools/compare_performance.py','--baseline',baseline,
                 '--repeats',str(args.repeats),*(['--smoke'] if args.smoke else [])]]),
         status='passed',baseline_commit=baseline,baseline_archive_sha256=sha256(snapshot).hexdigest(),
-        cases=rows,repeats=args.repeats,warmups=1,workspace=str(work),
+        cases=rows,repeats=args.repeats,warmups=1,public_interfaces_match=True,workspace=str(work),
         method='alternating fresh Node processes; one warm-up per variant; identical input and output bytes; '
                '20 ms OS peak-counter observations include host overhead and are lower bounds')
     output=base/('performance-smoke.json' if args.smoke else 'performance-comparison.json')

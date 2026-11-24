@@ -1,5 +1,13 @@
 # Registry releases
 
+## 0.2.1 — source preparation, 2026-11-24
+
+The 0.2.1 performance update is being prepared from compatible product sources.
+Its source/ZIP/CI checks and publication approval are separate from existing
+0.2.0 registry evidence. [SCALE.md](SCALE.md) records output-preserving comparisons
+against the fixed 0.2.0 revision. This preparation note is not a claim that a new
+registry archive has already been uploaded or installed.
+
 ## 0.2.0 — stable, published 2026-11-16
 
 The explicitly approved archive was published after all four jobs of

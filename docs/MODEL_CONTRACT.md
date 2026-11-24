@@ -2,6 +2,11 @@
 
 Implemented in `0.2.0-alpha.1` and retained by published stable `0.2.0`.
 
+Version 0.2.1 retains this public contract. Its immutable reference stores owned
+positions, live triangles and channels, with a BVH per reference patch; it does
+not clone the mutable topology graph. No-work requests still validate all options
+and numeric scales, then return detached snapshots without reference setup.
+
 `Model` is the deletion-capable, attribute-aware model layer. `Mesh` retains its
 geometry-only halfedge split/flip/Loop contract. Accessing `.mesh` from a snapshot
 and using geometry Loop is an explicit caller choice, not attribute-aware Loop.

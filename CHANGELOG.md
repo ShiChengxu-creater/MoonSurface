@@ -1,5 +1,15 @@
 # Changes
 
+## 0.2.1 — performance update
+
+- Keep the public API and remeshing policy compatible with 0.2.0.
+- Store only owned projection geometry/channels and live triangles, rather than cloning the editable topology graph and witnesses.
+- Build a deterministic BVH per constraint-separated reference patch.
+- Skip graph/reference setup for validated zero-budget, zero-iteration or empty requests while preserving report/validation behavior.
+- Add patch isolation, reference ownership, retired-face and no-work regression checks (50 core tests per target).
+- Compare five real/synthetic tasks against an exact 0.2.0 archive: byte-identical outputs, paired host timing and observed process-memory measurements.
+- Add Linux/Windows CI smoke checks for output-preserving optimization; publication proof remains version-specific in REGISTRY_RELEASE.
+
 ## 0.2.0 — published 2026-11-16
 
 - Preserve the 0.2 alpha product API; freeze the attributed/feature remeshing scope.

@@ -1,0 +1,578 @@
+{
+  "executed_at": "2026-11-24T07:11:56.966076+00:00",
+  "source_commit": "5fc655f2ee3218adf8ae3e447a44683cea1bcd25",
+  "source_tree": "07f7073733b3fe2c55c0cad92e85d45bcb215641",
+  "source_dirty": false,
+  "module": "ShiChengxu/moonsurface",
+  "version": "0.2.0",
+  "target": "js",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.13.5",
+  "toolchain": "moon 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moon.exe\nmoonc v0.10.14+7d59c7ec9 (2026-09-18) ~\\.moon\\bin\\moonc.exe\nmoonrun 0.1.20260920 (914d7da 2026-09-20) ~\\.moon\\bin\\moonrun.exe\n\nFeature flags enabled: rr_moon_mod,rr_moon_pkg",
+  "node": "v24.22.3",
+  "commands": [
+    [
+      "python",
+      "tools/compare_performance.py",
+      "--baseline",
+      "47c62fcab3d7b5693d12e9d659c1b367dcb9d410",
+      "--repeats",
+      "3"
+    ]
+  ],
+  "status": "passed",
+  "baseline_commit": "47c62fcab3d7b5693d12e9d659c1b367dcb9d410",
+  "baseline_archive_sha256": "db0f68bd3739133cbcc712dd909790a9ad214665444eacc6e35b6aa266d5206a",
+  "cases": [
+    {
+      "name": "avocado",
+      "input_sha256": "16c94d43987079a1894d5c25cb30ffc74141b624a5c66e09e8e56d6cd119ad9f",
+      "output_sha256": "738bef7316bf5eba929fb6a442839dff9e6da44612e9a10a68067662e5cb3762",
+      "output_byte_identical": true,
+      "measurements": {
+        "baseline": [
+          {
+            "seconds_host_included": 0.8655040001031011,
+            "sampled_peak_process_bytes": 108662784,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 0.8609732000622898,
+            "sampled_peak_process_bytes": 112381952,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 0.8386248000897467,
+            "sampled_peak_process_bytes": 112377856,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ],
+        "optimized": [
+          {
+            "seconds_host_included": 0.5867981999181211,
+            "sampled_peak_process_bytes": 109350912,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 0.5197816998697817,
+            "sampled_peak_process_bytes": 110751744,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 0.5450826000887901,
+            "sampled_peak_process_bytes": 109748224,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ]
+      },
+      "median_seconds": {
+        "baseline": 0.8609732000622898,
+        "optimized": 0.5450826000887901
+      },
+      "sampled_peak_bytes": {
+        "baseline": 112381952,
+        "optimized": 110751744
+      },
+      "speedup": 1.5795279466305536,
+      "before": {
+        "vertices": 363,
+        "edges": 1042,
+        "faces": 682,
+        "boundary_edges": 38,
+        "boundary_loops": 1,
+        "components": 2,
+        "euler": 3,
+        "min_angle_degrees": 1.8933967806824052,
+        "mean_min_angle_degrees": 32.58429068756775,
+        "mean_triangle_quality": 0.7373894684376726,
+        "edge_min": 0.000455387051025681,
+        "edge_max": 0.042084672258970085,
+        "edge_mean": 0.004623722391882944,
+        "edge_cv": 1.0886411872431159
+      },
+      "after": {
+        "vertices": 658,
+        "edges": 1927,
+        "faces": 1272,
+        "boundary_edges": 38,
+        "boundary_loops": 1,
+        "components": 2,
+        "euler": 3,
+        "min_angle_degrees": 2.875897781218356,
+        "mean_min_angle_degrees": 46.32413834971994,
+        "mean_triangle_quality": 0.9125388278598617,
+        "edge_min": 0.000690086289536029,
+        "edge_max": 0.00676581650937727,
+        "edge_mean": 0.003311159236371582,
+        "edge_cv": 0.20779311220228808
+      },
+      "operations": {
+        "kind": "remesh",
+        "iterations": 3,
+        "attempts": 5708,
+        "splits": 1042,
+        "collapses": 747,
+        "flips": 334,
+        "relaxed": 1876,
+        "rejected": 1709,
+        "rejected_topology": 1609,
+        "rejected_geometry": 100,
+        "rejected_attributes": 0,
+        "rejected_budget": 0,
+        "minimum_angle": 10,
+        "max_deviation": 0.0009182875933543877,
+        "stop": "iteration_limit"
+      },
+      "protected_edges": 87,
+      "protected_vertices": 88,
+      "max_protected_vertex_drift": 8.673617379884035e-19,
+      "sampled_corner_uv_max_error": 6.8833827526759706e-15,
+      "attribute_errors": {
+        "position_probe_max": 6.938893903907228e-18
+      },
+      "input_charts": 4,
+      "topology_preserved": true
+    },
+    {
+      "name": "suzanne",
+      "input_sha256": "5cdb6b4c75f6049416d1cbdc4fb61a4e7b8ed122de503731f410b1598f4d2f78",
+      "output_sha256": "e33cf5a815ea58f45a9e02e9c95118f8b19c415d33d06b0d70445b5dd233dc28",
+      "output_byte_identical": true,
+      "measurements": {
+        "baseline": [
+          {
+            "seconds_host_included": 1.1379577999468893,
+            "sampled_peak_process_bytes": 247455744,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.140566499903798,
+            "sampled_peak_process_bytes": 247386112,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.1847824999131262,
+            "sampled_peak_process_bytes": 245678080,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ],
+        "optimized": [
+          {
+            "seconds_host_included": 1.0667122001759708,
+            "sampled_peak_process_bytes": 179863552,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.0632261999417096,
+            "sampled_peak_process_bytes": 182935552,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.0593147999607027,
+            "sampled_peak_process_bytes": 182181888,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ]
+      },
+      "median_seconds": {
+        "baseline": 1.140566499903798,
+        "optimized": 1.0632261999417096
+      },
+      "sampled_peak_bytes": {
+        "baseline": 247455744,
+        "optimized": 182935552
+      },
+      "speedup": 1.0727411532619573,
+      "before": {
+        "vertices": 2012,
+        "edges": 5946,
+        "faces": 3936,
+        "boundary_edges": 84,
+        "boundary_loops": 4,
+        "components": 3,
+        "euler": 2,
+        "min_angle_degrees": 7.776493044838791,
+        "mean_min_angle_degrees": 34.768596923476956,
+        "mean_triangle_quality": 0.7849137630186821,
+        "edge_min": 0.009613220202684299,
+        "edge_max": 0.31983211463051514,
+        "edge_mean": 0.07503599760743232,
+        "edge_cv": 0.6358030318995823
+      },
+      "after": {
+        "vertices": 922,
+        "edges": 2676,
+        "faces": 1756,
+        "boundary_edges": 84,
+        "boundary_loops": 4,
+        "components": 3,
+        "euler": 2,
+        "min_angle_degrees": 7.776493044838791,
+        "mean_min_angle_degrees": 38.743892149640324,
+        "mean_triangle_quality": 0.8047785639118955,
+        "edge_min": 0.008761696865962591,
+        "edge_max": 0.28102526687583684,
+        "edge_mean": 0.11833178932964088,
+        "edge_cv": 0.408989731711857
+      },
+      "operations": {
+        "kind": "remesh",
+        "iterations": 3,
+        "attempts": 5631,
+        "splits": 137,
+        "collapses": 1227,
+        "flips": 607,
+        "relaxed": 1935,
+        "rejected": 1725,
+        "rejected_topology": 1182,
+        "rejected_geometry": 543,
+        "rejected_attributes": 0,
+        "rejected_budget": 0,
+        "minimum_angle": 10,
+        "max_deviation": 0.041752070081718724,
+        "stop": "iteration_limit"
+      },
+      "protected_edges": 304,
+      "protected_vertices": 352,
+      "max_protected_vertex_drift": 1.2412670766236366e-16,
+      "sampled_corner_uv_max_error": 2.220446049250313e-16,
+      "attribute_errors": {
+        "position_probe_max": 4.440892098500626e-16
+      },
+      "input_charts": 6,
+      "topology_preserved": true
+    },
+    {
+      "name": "grid-32768",
+      "input_sha256": "b72ac09692bf06c8a1afe7a1717413ff72a6f9ac7e24036f4dfb3cf2d6b4b6ff",
+      "output_sha256": "a14558e69a882cef7e0b08dae4ade80709632ab69a678562822d591852f4217d",
+      "output_byte_identical": true,
+      "measurements": {
+        "baseline": [
+          {
+            "seconds_host_included": 5.165511300088838,
+            "sampled_peak_process_bytes": 762589184,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 5.271218700101599,
+            "sampled_peak_process_bytes": 767320064,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 5.220054300036281,
+            "sampled_peak_process_bytes": 761090048,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ],
+        "optimized": [
+          {
+            "seconds_host_included": 5.211044100113213,
+            "sampled_peak_process_bytes": 639811584,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 5.213102599838749,
+            "sampled_peak_process_bytes": 713265152,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 5.217981800204143,
+            "sampled_peak_process_bytes": 718077952,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ]
+      },
+      "median_seconds": {
+        "baseline": 5.220054300036281,
+        "optimized": 5.213102599838749
+      },
+      "sampled_peak_bytes": {
+        "baseline": 767320064,
+        "optimized": 718077952
+      },
+      "speedup": 1.001333505348187,
+      "before": {
+        "vertices": 16641,
+        "edges": 49408,
+        "faces": 32768,
+        "boundary_edges": 512,
+        "boundary_loops": 1,
+        "components": 1,
+        "euler": 1,
+        "min_angle_degrees": 39.81017988930095,
+        "mean_min_angle_degrees": 42.87084561539643,
+        "mean_triangle_quality": 0.8624855112372729,
+        "edge_min": 0.007031563708476796,
+        "edge_max": 0.012042492284304632,
+        "edge_mean": 0.008889343993501829,
+        "edge_cv": 0.18095279438296843
+      },
+      "after": {
+        "vertices": 18869,
+        "edges": 56092,
+        "faces": 37224,
+        "boundary_edges": 512,
+        "boundary_loops": 1,
+        "components": 1,
+        "euler": 1,
+        "min_angle_degrees": 15.273781896670508,
+        "mean_min_angle_degrees": 44.197869981833726,
+        "mean_triangle_quality": 0.8803473935194652,
+        "edge_min": 0.0037304197414876083,
+        "edge_max": 0.013837960740397944,
+        "edge_mean": 0.00825275907431042,
+        "edge_cv": 0.2078389416640117
+      },
+      "operations": {
+        "kind": "remesh",
+        "iterations": 2,
+        "attempts": 61961,
+        "splits": 2404,
+        "collapses": 176,
+        "flips": 4625,
+        "relaxed": 36728,
+        "rejected": 18028,
+        "rejected_topology": 17959,
+        "rejected_geometry": 69,
+        "rejected_attributes": 0,
+        "rejected_budget": 0,
+        "minimum_angle": 10,
+        "max_deviation": 0.0021875,
+        "stop": "iteration_limit"
+      },
+      "protected_edges": 512,
+      "protected_vertices": 512,
+      "max_protected_vertex_drift": 2.7755575615628914e-17,
+      "sampled_corner_uv_max_error": 2.220446049250313e-16,
+      "attribute_errors": {
+        "position_probe_max": 2.220446049250313e-16
+      },
+      "input_charts": 1,
+      "topology_preserved": true
+    },
+    {
+      "name": "zero-budget-128",
+      "input_sha256": "2218fd8790ce419a057bf20128e27f00ef29235dd78cd1bc713ff2f539dbc6f0",
+      "output_sha256": "2276d18f52747544f574f3be4f65380e6d4ed07cc1566e27cad6447acd94cdad",
+      "output_byte_identical": true,
+      "measurements": {
+        "baseline": [
+          {
+            "seconds_host_included": 1.2529885000549257,
+            "sampled_peak_process_bytes": 625299456,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.2307304001878947,
+            "sampled_peak_process_bytes": 642568192,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.2701071000192314,
+            "sampled_peak_process_bytes": 527843328,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ],
+        "optimized": [
+          {
+            "seconds_host_included": 1.0537270999047905,
+            "sampled_peak_process_bytes": 547684352,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.147164999973029,
+            "sampled_peak_process_bytes": 547319808,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.0915765999816358,
+            "sampled_peak_process_bytes": 527134720,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ]
+      },
+      "median_seconds": {
+        "baseline": 1.2529885000549257,
+        "optimized": 1.0915765999816358
+      },
+      "sampled_peak_bytes": {
+        "baseline": 642568192,
+        "optimized": 547684352
+      },
+      "speedup": 1.1478704289520363,
+      "before": {
+        "vertices": 16641,
+        "edges": 49408,
+        "faces": 32768,
+        "boundary_edges": 512,
+        "boundary_loops": 1,
+        "components": 1,
+        "euler": 1,
+        "min_angle_degrees": 39.81017988930095,
+        "mean_min_angle_degrees": 42.87084561539643,
+        "mean_triangle_quality": 0.8624855112372729,
+        "edge_min": 0.007031563708476796,
+        "edge_max": 0.012042492284304632,
+        "edge_mean": 0.008889343993501829,
+        "edge_cv": 0.18095279438296843
+      },
+      "after": {
+        "vertices": 16641,
+        "edges": 49408,
+        "faces": 32768,
+        "boundary_edges": 512,
+        "boundary_loops": 1,
+        "components": 1,
+        "euler": 1,
+        "min_angle_degrees": 39.81017988930095,
+        "mean_min_angle_degrees": 42.87084561539643,
+        "mean_triangle_quality": 0.8624855112372729,
+        "edge_min": 0.007031563708476796,
+        "edge_max": 0.012042492284304632,
+        "edge_mean": 0.008889343993501829,
+        "edge_cv": 0.18095279438296843
+      },
+      "operations": {
+        "kind": "remesh",
+        "iterations": 0,
+        "attempts": 0,
+        "splits": 0,
+        "collapses": 0,
+        "flips": 0,
+        "relaxed": 0,
+        "rejected": 0,
+        "rejected_topology": 0,
+        "rejected_geometry": 0,
+        "rejected_attributes": 0,
+        "rejected_budget": 0,
+        "minimum_angle": 10,
+        "max_deviation": 0.0021875,
+        "stop": "operation_budget"
+      },
+      "protected_edges": 512,
+      "protected_vertices": 512,
+      "max_protected_vertex_drift": 2.7755575615628914e-17,
+      "sampled_corner_uv_max_error": 1.1102230246251565e-16,
+      "attribute_errors": {
+        "position_probe_max": 2.7755575615628914e-17
+      },
+      "input_charts": 1,
+      "topology_preserved": true
+    },
+    {
+      "name": "material-atlas-64",
+      "input_sha256": "faa6de2dcb01f06ce9b27597622dcd3e98ebac22b98608280ca5c14019116e55",
+      "output_sha256": "24610cece8796a948a51755cbd30d9a81c36ca811a5c890c4b4dcb978dc26003",
+      "output_byte_identical": true,
+      "measurements": {
+        "baseline": [
+          {
+            "seconds_host_included": 1.46116379997693,
+            "sampled_peak_process_bytes": 296378368,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.5767840999178588,
+            "sampled_peak_process_bytes": 253018112,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.4081453001126647,
+            "sampled_peak_process_bytes": 295866368,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ],
+        "optimized": [
+          {
+            "seconds_host_included": 1.2332446998916566,
+            "sampled_peak_process_bytes": 286793728,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.299511899938807,
+            "sampled_peak_process_bytes": 282980352,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          },
+          {
+            "seconds_host_included": 1.2391237998381257,
+            "sampled_peak_process_bytes": 289173504,
+            "memory_method": "Windows PeakWorkingSetSize, sampled"
+          }
+        ]
+      },
+      "median_seconds": {
+        "baseline": 1.46116379997693,
+        "optimized": 1.2391237998381257
+      },
+      "sampled_peak_bytes": {
+        "baseline": 296378368,
+        "optimized": 289173504
+      },
+      "speedup": 1.1791911350325213,
+      "before": {
+        "vertices": 4225,
+        "edges": 12416,
+        "faces": 8192,
+        "boundary_edges": 256,
+        "boundary_loops": 1,
+        "components": 1,
+        "euler": 1,
+        "min_angle_degrees": 39.82398795451043,
+        "mean_min_angle_degrees": 42.871967400807975,
+        "mean_triangle_quality": 0.8624901119785653,
+        "edge_min": 0.014065008760881792,
+        "edge_max": 0.024079432269770423,
+        "edge_mean": 0.01776757676221085,
+        "edge_cv": 0.18084014811875285
+      },
+      "after": {
+        "vertices": 4743,
+        "edges": 13970,
+        "faces": 9228,
+        "boundary_edges": 256,
+        "boundary_loops": 1,
+        "components": 1,
+        "euler": 1,
+        "min_angle_degrees": 19.685677133275355,
+        "mean_min_angle_degrees": 43.881000646187,
+        "mean_triangle_quality": 0.8790059741390235,
+        "edge_min": 0.007461394166746479,
+        "edge_max": 0.03347482535345728,
+        "edge_mean": 0.016582554456218965,
+        "edge_cv": 0.20450424376378473
+      },
+      "operations": {
+        "kind": "remesh",
+        "iterations": 2,
+        "attempts": 12753,
+        "splits": 645,
+        "collapses": 127,
+        "flips": 1067,
+        "relaxed": 7350,
+        "rejected": 3564,
+        "rejected_topology": 3535,
+        "rejected_geometry": 29,
+        "rejected_attributes": 0,
+        "rejected_budget": 0,
+        "minimum_angle": 10,
+        "max_deviation": 0.004375,
+        "stop": "iteration_limit"
+      },
+      "protected_edges": 1152,
+      "protected_vertices": 1089,
+      "max_protected_vertex_drift": 2.7755575615628914e-17,
+      "sampled_corner_uv_max_error": 3.3306690738754696e-16,
+      "attribute_errors": {
+        "position_probe_max": 2.220446049250313e-16
+      },
+      "input_charts": 64,
+      "topology_preserved": true
+    }
+  ],
+  "repeats": 3,
+  "warmups": 1,
+  "method": "alternating fresh Node processes; one warm-up per variant; identical input and output bytes; 20 ms OS peak-counter observations include host overhead and are lower bounds",
+  "target_release": "0.2.1",
+  "note": "Measured before version metadata bump; product source is unchanged by that bump. All selected baseline/new output bytes match."
+}

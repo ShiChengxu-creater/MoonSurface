@@ -40,6 +40,9 @@ jobs:
       - name: Bounded scale measurement smoke
         if: matrix.target == 'js'
         run: python tools/benchmark.py --sizes 16 --repeats 1
+      - name: Output-preserving performance comparison smoke
+        if: matrix.target == 'js'
+        run: python tools/compare_performance.py --smoke --repeats 1
       - name: Save verification evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -92,6 +95,8 @@ jobs:
           python tools/release_check.py
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python tools/benchmark.py --sizes 16 --repeats 1
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python tools/compare_performance.py --smoke --repeats 1
           exit $LASTEXITCODE
       - name: Save verification evidence
         if: always()

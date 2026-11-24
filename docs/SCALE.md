@@ -75,3 +75,45 @@ Count limits and runtime budgets do not prove memory fit or speed for arbitrary
 models at those limits. No native-vs-JS speed comparison or MeshLab speed claim is
 made. Full raw input/output files are retained in the participant's local archive;
 any clean clone can regenerate them with the commands above.
+
+## Continued optimization — 2026-11-24, 0.2.1
+
+The 0.2.1 source removes the editable-graph copy from immutable projection data,
+keeps only live reference triangles, builds a deterministic BVH per constraint
+patch, and skips graph/witness/BVH setup for validated no-work requests. Generated
+public interfaces match 0.2.0. No remeshing quality or feature policy is changed.
+
+The paired comparison builds the exact old revision `47c62fc` and optimized source
+`5fc655f` with the same installed compiler. The version field at measurement time
+was still 0.2.0; the subsequent 0.2.1 metadata/docs update does not change product
+source. Each case has a warm-up per variant and three measured runs, alternating
+which variant runs first. Both columns below come from that same paired experiment.
+The host uses the normal JS debug build, fresh Node processes, and identical inputs.
+
+| Task | Baseline median seconds | Optimized median seconds | Baseline observed peak MiB | Optimized observed peak MiB | Output |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Avocado | 0.861 | 0.545 | 107.2 | 105.6 | byte-identical |
+| Suzanne | 1.141 | 1.063 | 236.0 | 174.5 | byte-identical |
+| 32768-face grid, two rounds / 200000 cap | 5.220 | 5.213 | 731.8 | 684.8 | byte-identical |
+| 32768-face grid, zero attempt budget | 1.253 | 1.092 | 612.8 | 522.3 | byte-identical |
+| 8192-face grid, 64 material patches | 1.461 | 1.239 | 282.6 | 275.8 | byte-identical |
+
+The large full-work grid's run time is essentially unchanged in this experiment;
+the observed process-memory peak is lower. Benefits differ by task, and the small
+Avocado memory difference should not be read as a reliable general memory gain.
+All repeats have matching output SHA-256 within and across implementations; the
+independent checker validates the same topology/attributes/features/quality.
+This is evidence of preserved outputs on these five tasks, not a guarantee of
+bitwise equivalence or speed improvement for every possible input.
+
+```sh
+python tools/compare_performance.py --repeats 3
+python tools/compare_performance.py --smoke --repeats 1
+```
+
+The full measurement, individual runs, hashes and source/compiler context are in
+[performance-0.2.1.json](evidence/performance-0.2.1.json). Timing includes process
+startup, IO and serialization. Memory retains the 20 ms observed OS-counter
+semantics above. CI runs the smaller output-preservation/API comparison, with no
+speed threshold. Future intentional output/API changes need an explicit baseline
+review; this check is not a blanket promise to freeze all future behavior to 0.2.0.
