@@ -10,9 +10,20 @@ priv struct ProjectionNode {
 
 ///|
 priv struct ReferenceSurface {
-  state : ModelState
+  points : Array[Vec3]
+  faces : Array[ReferenceFace]
+  attributes : Array[VertexAttribute]
   nodes : Array[ProjectionNode]
-  root : Int
+  roots : Map[Int, Int]
+}
+
+///|
+/// Projection owns geometry and channels, not the editable graph or its witnesses.
+priv struct ReferenceFace {
+  a : Int
+  b : Int
+  c : Int
+  uv : CornerUV?
 }
 
 ///|
@@ -43,15 +54,33 @@ fn coordinate(p : Vec3, axis : Int) -> Double {
 
 ///|
 fn ReferenceSurface::new(state : ModelState) -> ReferenceSurface {
-  let reference = { state: state.copy(), nodes: [], root: 0, }
-  let ids : Array[Int] = []
-  for id, f in state.faces {
+  let reference = {
+    points: state.points.copy(),
+    faces: [],
+    attributes: state.attributes.map(attribute_copy),
+    nodes: [],
+    roots: Map([]),
+  }
+  let patches : Map[Int, Array[Int]] = Map([])
+  let charts : Array[Int] = []
+  for f in state.faces {
     if f.alive {
-      ids.push(id)
+      let id = reference.faces.length()
+      reference.faces.push({ a: f.a, b: f.b, c: f.c, uv: f.uv, })
+      match patches.get(f.chart) {
+        Some(ids) => ids.push(id)
+        None => {
+          patches[f.chart] = [id]
+          charts.push(f.chart)
+        }
+      }
     }
   }
-  let root = reference.build(ids)
-  { ..reference, root, }
+  charts.sort_by(fn(a, b) { a.compare(b) })
+  for chart in charts {
+    reference.roots[chart] = reference.build(patches[chart])
+  }
+  reference
 }
 
 ///|
@@ -63,8 +92,9 @@ fn ReferenceSurface::build(self : ReferenceSurface, ids : Array[Int]) -> Int {
   }
   let mut hi = v_scale(lo, -1.0)
   for id in ids {
-    for v in self.state.faces[id].vertices() {
-      let p = self.state.points[v]
+    let f = self.faces[id]
+    for v in [f.a, f.b, f.c] {
+      let p = self.points[v]
       lo = {
         x: Double::min(lo.x, p.x),
         y: Double::min(lo.y, p.y),
@@ -92,14 +122,14 @@ fn ReferenceSurface::build(self : ReferenceSurface, ids : Array[Int]) -> Int {
     2
   }
   ids.sort_by(fn(a, b) {
-    let fa = self.state.faces[a]
-    let fb = self.state.faces[b]
-    let ca = coordinate(self.state.points[fa.a], axis) +
-      coordinate(self.state.points[fa.b], axis) +
-      coordinate(self.state.points[fa.c], axis)
-    let cb = coordinate(self.state.points[fb.a], axis) +
-      coordinate(self.state.points[fb.b], axis) +
-      coordinate(self.state.points[fb.c], axis)
+    let fa = self.faces[a]
+    let fb = self.faces[b]
+    let ca = coordinate(self.points[fa.a], axis) +
+      coordinate(self.points[fa.b], axis) +
+      coordinate(self.points[fa.c], axis)
+    let cb = coordinate(self.points[fb.a], axis) +
+      coordinate(self.points[fb.b], axis) +
+      coordinate(self.points[fb.c], axis)
     if ca == cb {
       a.compare(b)
     } else {
@@ -206,7 +236,11 @@ fn ReferenceSurface::closest(
   p : Vec3,
   chart : Int,
 ) -> ProjectionHit raise SurfaceError {
-  let stack = [self.root]
+  let root = match self.roots.get(chart) {
+    Some(root) => root
+    None => raise NumericalFailure("no reference patch")
+  }
+  let stack = [root]
   let mut best : ProjectionHit? = None
   let mut distance = 1.7976931348623157e308
   while !stack.is_empty() {
@@ -227,14 +261,11 @@ fn ReferenceSurface::closest(
       }
     } else {
       for id in node.faces {
-        let f = self.state.faces[id]
-        if f.chart != chart {
-          continue
-        }
+        let f = self.faces[id]
         let hit = triangle_hit(
-          self.state.points[f.a],
-          self.state.points[f.b],
-          self.state.points[f.c],
+          self.points[f.a],
+          self.points[f.b],
+          self.points[f.c],
           p,
           id,
         )
@@ -282,9 +313,9 @@ fn ReferenceSurface::sample(
   self : ReferenceSurface,
   hit : ProjectionHit,
 ) -> ModelSample raise SurfaceError {
-  let f = self.state.faces[hit.face]
+  let f = self.faces[hit.face]
   let rows : Array[Array[Double]] = []
-  for attr in self.state.attributes {
+  for attr in self.attributes {
     let a = attr.data[f.a]
     let b = attr.data[f.b]
     let c = attr.data[f.c]
