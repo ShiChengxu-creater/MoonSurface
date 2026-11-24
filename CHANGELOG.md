@@ -1,6 +1,6 @@
 # Changes
 
-## 0.2.1 — performance update
+## 0.2.1 — published 2026-11-24
 
 - Keep the public API and remeshing policy compatible with 0.2.0.
 - Store only owned projection geometry/channels and live triangles, rather than cloning the editable topology graph and witnesses.

@@ -574,5 +574,28 @@
   "warmups": 1,
   "method": "alternating fresh Node processes; one warm-up per variant; identical input and output bytes; 20 ms OS peak-counter observations include host overhead and are lower bounds",
   "target_release": "0.2.1",
-  "note": "Measured before version metadata bump; product source is unchanged by that bump. All selected baseline/new output bytes match."
+  "note": "Measured before version metadata bump; product source is unchanged by that bump. All selected baseline/new output bytes match.",
+  "published_release": {
+    "version": "0.2.1",
+    "source_commit": "645380322d01d77c19c10a7590479567b9aa330b",
+    "archive_sha256": "d7f507943b221ca9afeed796e3af88d50fed642f24e2bfcd7f1888dd54cc9640",
+    "registry_verification": "registry-0.2.1.json",
+    "targets": [
+      {
+        "target": "js",
+        "tests": 5,
+        "passed": 5
+      },
+      {
+        "target": "wasm-gc",
+        "tests": 5,
+        "passed": 5
+      },
+      {
+        "target": "native",
+        "tests": 5,
+        "passed": 5
+      }
+    ]
+  }
 }

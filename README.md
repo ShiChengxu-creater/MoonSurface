@@ -9,6 +9,8 @@
 **0.2.1 性能更新**：参考表面只保存投影所需的几何/属性，每个约束区域建立独立 BVH；
 零预算、零轮次和空模型跳过无用的重网格准备。公开 API 与 0.2.0 兼容。
 同机对照的五组任务输出与 0.2.0 逐字节一致，具体收益及限制见 [SCALE.md](docs/SCALE.md)。
+[`0.2.1`](https://mooncakes.io/docs/ShiChengxu/moonsurface@0.2.1) 已于 2026-11-24
+从提交 `6453803` 发布，并通过三后端真实注册表消费者验证；后续提交记录发布事实。
 QEM 尚未实现。发布事实见 [REGISTRY_RELEASE.md](docs/REGISTRY_RELEASE.md)。
 
 ## 模型处理能力

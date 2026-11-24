@@ -1,12 +1,27 @@
 # Registry releases
 
-## 0.2.1 — source preparation, 2026-11-24
+## 0.2.1 — performance update, published 2026-11-24
 
-The 0.2.1 performance update is being prepared from compatible product sources.
-Its source/ZIP/CI checks and publication approval are separate from existing
-0.2.0 registry evidence. [SCALE.md](SCALE.md) records output-preserving comparisons
-against the fixed 0.2.0 revision. This preparation note is not a claim that a new
-registry archive has already been uploaded or installed.
+The approved 0.2.1 archive was published after four exact-head jobs of
+[CI 45347672321](https://github.com/ShiChengxu-creater/MoonSurface/actions/runs/45347672321)
+passed, including output-preserving comparison smoke on Linux and Windows.
+The server returned `200 OK`; subsequent metadata/download verification matched
+the same frozen archive. [SCALE.md](SCALE.md) retains all paired measurements.
+
+- Published source: `645380322d01d77c19c10a7590479567b9aa330b`.
+- Archive SHA-256: `d7f507943b221ca9afeed796e3af88d50fed642f24e2bfcd7f1888dd54cc9640`.
+- Registry created at: `2026-11-24T07:27:17.962461+00:00`.
+- Fresh JS/wasm-gc/Windows native consumers: 5/5 per target, with no local path or workspace override.
+- All 23 non-test MoonBit files matched the approved source after LF normalization.
+- README registry app compiled and returned 16 faces.
+- Portable report: [registry-0.2.1.json](evidence/registry-0.2.1.json).
+
+```sh
+python tools/registry_consumer.py --version 0.2.1 --source-ref 6453803 --expected-sha256 d7f507943b221ca9afeed796e3af88d50fed642f24e2bfcd7f1888dd54cc9640 --readme
+```
+
+The previous 0.2.0 release below remains unchanged. Post-publication documentation
+does not replace the approved immutable archive or its source revision.
 
 ## 0.2.0 — stable, published 2026-11-16
 

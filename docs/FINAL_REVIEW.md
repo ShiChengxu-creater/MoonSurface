@@ -13,6 +13,10 @@ The 0.2.0 evidence below remains a historical release record; new comparison
 measurements are appended to [SCALE.md](SCALE.md), and registry proof is tracked
 separately for each version.
 
+Publication update: 0.2.1 has now been published from `6453803`, after four CI jobs
+passed. Fresh three-target registry consumers passed 5 tests per target, public
+source/archive hashes matched, and the README registry app returned 16 faces.
+
 ## Deliverables and evidence
 
 | Item | Reproduce / inspect |
